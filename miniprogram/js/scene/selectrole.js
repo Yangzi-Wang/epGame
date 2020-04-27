@@ -1,10 +1,6 @@
 import MyAnimation from '../base/myanim.js'
-let bedroomBg = new Image()
-bedroomBg.src = 'images/bedroom.jpg'
-let boy = new Image()
-boy.src = 'images/role-boy.png'
-let girl = new Image()
-girl.src = 'images/role-girl.png'
+
+
 export default class SelectRole {
   constructor(databus) {
 
@@ -18,31 +14,45 @@ export default class SelectRole {
     }
 
     this.animations = []
-    this.boy = new MyAnimation(boy, 7, 2237, 484)
+    this.boy = new MyAnimation(databus.imgList['boy'], 7, 2237, 484)
     this.animations.push(this.boy)
-    this.girl = new MyAnimation(girl, 7, 2239, 484)
+    this.selectedboy = new MyAnimation(databus.imgList['selectedboy'], 9, 2878, 484)
+    this.animations.push(this.selectedboy)
+    this.girl = new MyAnimation(databus.imgList['girl'], 7, 2239, 484)
     this.animations.push(this.girl)
+    this.selectedgirl = new MyAnimation(databus.imgList['selectedgirl'], 7, 2239, 484)
+    this.animations.push(this.selectedgirl)
+
+    this.role = -1
 
   }
   init() {
     //this.animations = []
     this.boy.init(canvas.width/2-100, 90, 319*0.3,484*0.3)
     this.boy.playAnimation(0,true,20)
+    this.selectedboy.init(canvas.width / 2 - 100, 90, 319 * 0.3, 484 * 0.3)
+    this.selectedboy.playAnimation(0, true, 20)
+
     this.girl.init(canvas.width /2+10, 90, 319 * 0.3, 484 * 0.3)
     this.girl.playAnimation(0, true, 20)
+    this.selectedgirl.init(canvas.width / 2 + 10, 90, 319 * 0.3, 484 * 0.3)
+    this.selectedgirl.playAnimation(0, true, 20)
+
     this.bindEvent()
     
   }
   render(ctx) {
-    ctx.drawImage(bedroomBg,0,0,canvas.width,canvas.height)
+    ctx.drawImage(this.databus.imgList['bedroomBg'],0,0,canvas.width,canvas.height)
     ctx.fillStyle = '#ff0000'
     ctx.fillRect(this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
 
-    this.animations.forEach((ani) => {
-        
-          ani.render(ctx)
-        
-      })
+    if(this.role===0){
+      this.selectedboy.render(ctx)
+    } else { this.boy.render(ctx) }
+
+    if (this.role === 1) {
+      this.selectedgirl.render(ctx)
+    } else { this.girl.render(ctx) }
   }
   update(){
     this.animations.forEach((ani) => {
@@ -53,6 +63,8 @@ export default class SelectRole {
 
   bindEvent() {
     this.databus._event.once('touchstart', this.confirm.bind(this))
+    let selectHandler = this.selectHandler.bind(this)
+    this.databus._event.on('touchstart', selectHandler)
   }
   confirm(e) {
     e.preventDefault()
@@ -67,6 +79,26 @@ export default class SelectRole {
       && y >= area.startY
       && y <= area.startY + area.height) {
       //this.databus.changeScene('SceneOne')
+      this.databus.role = this.role
+    }
+  }
+  selectHandler(e){
+    e.preventDefault()
+
+    let x = e.touches[0].clientX
+    let y = e.touches[0].clientY
+
+    if (x >= this.boy.locx
+      && x <= this.boy.locx + this.boy.target_w
+      && y >= this.boy.locy
+      && y <= this.boy.locy + this.boy.target_h) {
+        this.role = 0
+    }
+    if (x >= this.girl.locx
+      && x <= this.girl.locx + this.girl.target_w
+      && y >= this.girl.locy
+      && y <= this.girl.locy + this.girl.target_h) {
+      this.role = 1
     }
   }
 }
