@@ -38,6 +38,8 @@ export default class SelectRole {
     this.selectedgirl.init(canvas.width / 2 + 10, 90, 319 * 0.3, 484 * 0.3)
     this.selectedgirl.playAnimation(0, true, 20)
 
+    this.selectHandler = this.selectHandler.bind(this)
+    this.confirmHandler = this.confirm.bind(this)
     this.bindEvent()
     
   }
@@ -62,9 +64,8 @@ export default class SelectRole {
   }
 
   bindEvent() {
-    this.databus._event.once('touchstart', this.confirm.bind(this))
-    let selectHandler = this.selectHandler.bind(this)
-    this.databus._event.on('touchstart', selectHandler)
+    this.databus._event.on('touchstart', this.confirmHandler)
+    this.databus._event.on('touchstart', this.selectHandler)
   }
   confirm(e) {
     e.preventDefault()
@@ -78,7 +79,9 @@ export default class SelectRole {
       && x <= area.startX + area.width
       && y >= area.startY
       && y <= area.startY + area.height) {
-      //this.databus.changeScene('SceneOne')
+      this.databus.changeScene('sceneFour')
+      this.databus._event.off('touchstart', this.selectHandler)
+      this.databus._event.off('touchstart', this.confirmHandler)
       this.databus.role = this.role
     }
   }

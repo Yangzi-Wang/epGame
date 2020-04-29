@@ -58,7 +58,7 @@ export default class Event {
 
   trigger = (type, eventData = {}) => {
 
-    this.handler[type].forEach(fn => {
+    this.handler[type]&&this.handler[type].forEach(fn => {
 
       // fn.call(_this, eventData);
       fn(eventData)

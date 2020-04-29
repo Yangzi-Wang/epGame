@@ -32,6 +32,12 @@ export default class Main {
     canvas.addEventListener('touchstart',function(e){
       databus._event.trigger('touchstart',e)
     })
+    canvas.addEventListener('touchmove', function (e) {
+      databus._event.trigger('touchmove', e)
+    })
+    canvas.addEventListener('touchend', function (e) {
+      databus._event.trigger('touchend', e)
+    })
     
 
     this.bindLoop     = this.loop.bind(this)
