@@ -1,6 +1,7 @@
 import Event from './base/event'
 import StartPage from './scene/startpage'
 import SelectRole from './scene/selectrole'
+import SceneOne from './scene/sceneone'
 
 let instance
 let ctx = canvas.getContext('2d')
@@ -10,7 +11,11 @@ let images = {
   'selectedboy': 'images/selectedboy.png',
   'girl': 'images/role-girl.png',
   'selectedgirl': 'images/selectedgirl.png',
-  'bedroomBg':'images/bedroom.jpg'
+  'bedroomBg':'images/bedroom.jpg',
+  'window':'images/window.png',
+  'clock':'images/clock.png',
+  'sleepboy':'images/sleepboy.png',
+  'sleepgirl':'images/sleepgirl.png'
 }
 
 /**
@@ -60,6 +65,6 @@ export default class DataBus {
     this.sceneObj = {}
     this.sceneObj['startPage'] = new StartPage(instance)
     this.sceneObj['selectRole'] = new SelectRole(instance)
-    // this.sceneObj['sceneOne'] = new SceneOne(instance)
+    this.sceneObj['sceneOne'] = new SceneOne(instance)
   }
 }

@@ -64,8 +64,9 @@ export default class SelectRole {
   bindEvent() {
     this.databus._event.once('touchstart', this.confirm.bind(this))
     let selectHandler = this.selectHandler.bind(this)
-    this.databus._event.on('touchstart', selectHandler)
+    this.databus._event.once('touchstart', selectHandler)
   }
+  
   confirm(e) {
     e.preventDefault()
 
@@ -77,9 +78,10 @@ export default class SelectRole {
     if (x >= area.startX
       && x <= area.startX + area.width
       && y >= area.startY
-      && y <= area.startY + area.height) {
-      //this.databus.changeScene('SceneOne')
+      && y <= area.startY + area.height) {    
+        console.log("hello")    
       this.databus.role = this.role
+      this.databus.changeScene('sceneOne')
     }
   }
   selectHandler(e){

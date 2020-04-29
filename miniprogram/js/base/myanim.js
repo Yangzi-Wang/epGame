@@ -63,6 +63,7 @@ export default class MyAnimation {
     this.isPlaying = false
   }
 
+
   // 帧遍历
   update() {
     if(this.isPlaying){
