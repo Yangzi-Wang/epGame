@@ -59,8 +59,9 @@ export default class MyAnimation {
   }
 
   // 停止帧动画播放
-  stop() {
+  stop(reset = false) {
     this.isPlaying = false
+    if(reset) this.index = 0
   }
 
 
@@ -81,5 +82,9 @@ export default class MyAnimation {
       }
     }
     
+  }
+  setXY(x,y){
+    this.locx = x
+    this.locy = y
   }
 }

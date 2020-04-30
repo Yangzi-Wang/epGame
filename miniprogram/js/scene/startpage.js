@@ -18,6 +18,7 @@ export default class StartPage {
   }
   init(){
     this.animations = []
+    this.eventHandler1 = this.nextScene.bind(this)
     this.bindEvent()
   }
   render(ctx) {
@@ -35,7 +36,7 @@ export default class StartPage {
 
   }
   bindEvent(){
-    this.databus._event.once('touchstart', this.nextScene.bind(this))
+    this.databus._event.on('touchstart', this.eventHandler1)
   }
   nextScene(e) {
     e.preventDefault()
@@ -50,7 +51,7 @@ export default class StartPage {
       && y >= area.startY
       && y <= area.startY + area.height){
       this.databus.changeScene('selectRole')
-      //console.log('start')
+      this.databus._event.off('touchstart', this.eventHandler1)
       }
   }
 }
