@@ -2,16 +2,18 @@
 import DataBus    from './databus'
 
 let ctx   = canvas.getContext('2d')
-let databus = new DataBus()
 
-//wx.cloud.init({
+// wx.cloud.init({
   // env 参数说明：
   //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
   //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
   //   如不填则使用默认环境（第一个创建的环境）
-  // env: 'my-env-id',
-//})
+  // env: 'epgame-96p1p',
+// })
 //const db = wx.cloud.database()
+
+let databus = new DataBus()
+
 
 /**
  * 游戏主函数
@@ -21,13 +23,19 @@ export default class Main {
     // 维护当前requestAnimationFrame的id
     this.aniId    = 0
 
-    this.restart()
+    let that = this
+    databus.loadAllResource2(function () {
+      databus.createScenes()
+      that.restart()
+    })
   }
 
   restart() {
     databus.reset()
 
     canvas.removeEventListener('touchstart')
+    canvas.removeEventListener('touchmove')
+    canvas.removeEventListener('touchend')
 
     canvas.addEventListener('touchstart',function(e){
       databus._event.trigger('touchstart',e)

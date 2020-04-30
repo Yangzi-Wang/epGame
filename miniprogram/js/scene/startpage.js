@@ -1,8 +1,6 @@
-// const screenWidth = window.innerWidth
-// const screenHeight = window.innerHeight
 
-// let atlas = new Image()
-// atlas.src = 'images/Common.png'
+let r_w = canvas.width / 1334
+let r_h = canvas.height / 750
 
 export default class StartPage {
   constructor(databus){
@@ -10,10 +8,10 @@ export default class StartPage {
     this.databus = databus
 
     this.btnArea = {
-      startX: canvas.width / 2 - 50,
+      startX: canvas.width / 2 - 100 * r_w,
       startY: canvas.height / 2,
-      width: 100,
-      height: 50
+      width: 200 * r_w,
+      height: 100 * r_w
     }
   }
   init(){
