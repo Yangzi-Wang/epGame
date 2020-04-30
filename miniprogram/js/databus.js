@@ -25,7 +25,11 @@ export default class DataBus {
     this._event = new Event()
 
     this.imgList = {}
-
+    this.sceneObj = {}
+    this.sceneObj['startPage'] = new StartPage(instance)
+    // this.sceneObj.startPage.init()
+    this.ready = false  //资源是否加载完毕
+    this.process = 0
   }
 
   reset() {
@@ -53,6 +57,7 @@ export default class DataBus {
           // 返回临时文件路径
           that.imgList[obj.name] = new Image()
           that.imgList[obj.name].src = res.tempFilePath
+          that.process = Math.round(done / images.length * 100)
           if (done === images.length) {
             callback()
           }
@@ -68,17 +73,20 @@ export default class DataBus {
       
           that.imgList[obj.name] = new Image()
           that.imgList[obj.name].src = obj.fileID
+          // that.process = Math.round(done/images.length*100)
     }
     callback()
   }
   createScenes(){
-    this.sceneObj = {}
-    this.sceneObj['startPage'] = new StartPage(instance)
+    
     this.sceneObj['selectRole'] = new SelectRole(instance)
     // this.sceneObj['sceneOne'] = new SceneOne(instance)
     this.sceneObj['sceneThree'] = new SceneThree(instance)
     this.sceneObj['sceneFour'] = new SceneFour(instance)
     this.sceneObj['sceneFive'] = new SceneFive(instance)
     this.sceneObj['epClass'] = new EpClass(instance)
+
+    this.ready = true
+    this.sceneObj.startPage.bindEvent()
   }
 }

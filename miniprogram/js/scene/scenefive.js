@@ -13,13 +13,13 @@ export default class SceneFive {
 
     this.databus = databus
 
-    this.step1 = new MyAnimation(databus.imgList['step1'], 5, 2325, 385)
-    this.step2 = new MyAnimation(databus.imgList['step2'], 5, 2405, 364)
+    this.step1 = new MyAnimation(databus.imgList['step1'], 5, 2000, 331)
+    this.step2 = new MyAnimation(databus.imgList['step2'], 5, 2000, 303)
     this.step4 = new MyAnimation(databus.imgList['step4'], 4, 1024, 395)
     this.step5 = new MyAnimation(databus.imgList['step5'], 4, 1924, 395)
-    this.step6 = new MyAnimation(databus.imgList['step6'], 5, 2400, 395)
-    this.step7 = new MyAnimation(databus.imgList['step7'], 5, 2400, 395)
-    this.step8 = new MyAnimation(databus.imgList['step8'], 5, 2400, 395)
+    this.step6 = new MyAnimation(databus.imgList['step6'], 5, 2000, 329)
+    this.step7 = new MyAnimation(databus.imgList['step7'], 5, 2000, 329)
+    this.step8 = new MyAnimation(databus.imgList['step8'], 5, 2000, 329)
 
     this.btnArea = {
       startX: canvas.width / 2 - 50,
@@ -55,6 +55,7 @@ export default class SceneFive {
     this.animations.push(this.step6)
     this.animations.push(this.step7)
     this.animations.push(this.step8)
+    this.animations.push(this.step1)
 
     this.currentAni = this.step1
 
