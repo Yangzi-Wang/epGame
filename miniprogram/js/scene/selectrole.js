@@ -1,5 +1,6 @@
 import MyAnimation from '../base/myanim.js'
-
+let r_w = canvas.width / 1334
+let r_h = canvas.height / 750
 
 export default class SelectRole {
   constructor(databus) {
@@ -8,19 +9,19 @@ export default class SelectRole {
 
     this.btnArea = {
       startX: canvas.width / 2 - 50,
-      startY: canvas.height / 2 + 50,
+      startY: 550 * r_h,
       width: 100,
       height: 50
     }
 
     this.animations = []
-    this.boy = new MyAnimation(databus.imgList['boy'], 7, 2237, 484)
+    this.boy = new MyAnimation(databus.imgList['boy'], 7, 2000, 441)
     this.animations.push(this.boy)
-    this.selectedboy = new MyAnimation(databus.imgList['selectedboy'], 9, 2878, 484)
+    this.selectedboy = new MyAnimation(databus.imgList['selectedboy'], 9, 2000, 343)
     this.animations.push(this.selectedboy)
-    this.girl = new MyAnimation(databus.imgList['girl'], 7, 2239, 484)
+    this.girl = new MyAnimation(databus.imgList['girl'], 7, 1953, 436)
     this.animations.push(this.girl)
-    this.selectedgirl = new MyAnimation(databus.imgList['selectedgirl'], 7, 2239, 484)
+    this.selectedgirl = new MyAnimation(databus.imgList['selectedgirl'], 7, 1953, 436)
     this.animations.push(this.selectedgirl)
 
     this.role = -1
@@ -28,24 +29,35 @@ export default class SelectRole {
   }
   init() {
     //this.animations = []
-    this.boy.init(canvas.width/2-100, 90, 319*0.3,484*0.3)
+    let w = 319 * 0.9 * r_h
+    let h = 484 * 0.9 * r_h
+    let y = 100 * r_h
+    let bx = canvas.width / 2 - w - 20
+    let gx = canvas.width / 2 + 20
+    this.boy.init(bx, y, w, h)
     this.boy.playAnimation(0,true,20)
-    this.selectedboy.init(canvas.width / 2 - 100, 90, 319 * 0.3, 484 * 0.3)
+    this.selectedboy.init(bx, y, w, h)
     this.selectedboy.playAnimation(0, true, 20)
 
-    this.girl.init(canvas.width /2+10, 90, 319 * 0.3, 484 * 0.3)
+    this.girl.init(gx, y, w, h)
     this.girl.playAnimation(0, true, 20)
-    this.selectedgirl.init(canvas.width / 2 + 10, 90, 319 * 0.3, 484 * 0.3)
+    this.selectedgirl.init(gx, y, w, h)
     this.selectedgirl.playAnimation(0, true, 20)
 
     this.selectHandler = this.selectHandler.bind(this)
     this.confirmHandler = this.confirm.bind(this)
     this.bindEvent()
+    this.role = -1
     
   }
   render(ctx) {
     ctx.drawImage(this.databus.imgList['bedroomBg'],0,0,canvas.width,canvas.height)
+    ctx.fillStyle = '#ffffff'
+    ctx.globalAlpha = 0.3
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
     ctx.fillStyle = '#ff0000'
+    ctx.globalAlpha = 1
     ctx.fillRect(this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
 
     if(this.role===0){
@@ -69,6 +81,8 @@ export default class SelectRole {
   }
   
   confirm(e) {
+    if(this.role===-1) return
+    
     e.preventDefault()
 
     let x = e.touches[0].clientX
@@ -80,10 +94,12 @@ export default class SelectRole {
       && x <= area.startX + area.width
       && y >= area.startY
       && y <= area.startY + area.height) {
+
+      //this.databus.changeScene('sceneThree')
       this.databus._event.off('touchstart', this.selectHandler)
       this.databus._event.off('touchstart', this.confirmHandler)
       this.databus.role = this.role
-      this.databus.changeScene('sceneTwo')
+      this.databus.changeScene('sceneOne')
     }
   }
   selectHandler(e){

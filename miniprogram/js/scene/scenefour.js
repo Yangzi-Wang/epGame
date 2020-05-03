@@ -38,10 +38,10 @@ export default class SceneFour {
       height: 300 * r_w
     }
     this.targetArea = {
-      startX: 360 * r_w,
-      startY: 280 * r_w,
-      width: 340 * r_w,
-      height: 200 * r_w
+      startX: 360 * r_w + 70,
+      startY: 280 * r_w + 50,
+      width: 310 * r_w,
+      height: 180 * r_w
     }
   }
   init() {
@@ -193,7 +193,7 @@ export default class SceneFour {
     let x = e.touches[0].clientX
     let y = e.touches[0].clientY
 
-    this.alcohol.setXY(x-50,y-50)
+    this.alcohol.setXY(x-100,y-100)
 
     let area = this.targetArea
     if (x >= area.startX
