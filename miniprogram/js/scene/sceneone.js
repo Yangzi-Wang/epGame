@@ -107,6 +107,7 @@ export default class SceneOne {
     this.cheaked = true
     this.cover = true
     this.close = false
+    this.bol = true
     this.maskcount = 1
     this.btn = this.databus.imgList['mstep1']
     this.downHandler = this.putdown.bind(this)
@@ -121,7 +122,13 @@ export default class SceneOne {
 
 
   render(ctx) {
-    ctx.drawImage(this.databus.imgList['bedroomBg'], 0, 0, canvas.width, canvas.height)
+    if(this.bol){
+      this.bol = false
+      canvas.width = canvas.width * window.devicePixelRatio
+      canvas.height = canvas.height * window.devicePixelRatio
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+    }
+    ctx.drawImage(this.databus.imgList['bedroomBg'], 0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio)
 
     this.window.render(ctx)
     this.clock.render(ctx)
@@ -223,10 +230,10 @@ export default class SceneOne {
   putdown() {
     this.big = true
     if(this.role==1){
-      this.maskArea.startX = canvas.width / 2 - 195 * r_w
+      this.maskArea.startX = canvas.width / window.devicePixelRatio / 2 - 195 * r_w
       this.maskArea.startY  = 385 * r_h
     }else{
-      this.maskArea.startX = canvas.width / 2 - 195 * r_w
+      this.maskArea.startX = canvas.width / window.devicePixelRatio / 2 - 195 * r_w
       this.maskArea.startY = 395 * r_h
     }
     this.databus._event.off('touchmove',this.moveHandler)

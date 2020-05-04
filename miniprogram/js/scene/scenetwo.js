@@ -131,9 +131,9 @@ export default class SceneTwo {
   }
 
   render(ctx) {
-    ctx.drawImage(this.databus.imgList['sky'], 0, 0, canvas.width, canvas.height)
+    ctx.drawImage(this.databus.imgList['sky'], 0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio)
 
-    ctx.drawImage(this.databus.imgList['ground'], 0, 0, canvas.width, canvas.height)
+    ctx.drawImage(this.databus.imgList['ground'], 0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio)
 
     //ctx.drawImage(this.databus.imgList['line'], this.lineArea.startX, this.lineArea.startY, this.lineArea.width, this.lineArea.height)
 
@@ -145,13 +145,13 @@ export default class SceneTwo {
       ctx.drawImage(this.databus.imgList['brand'], this.brandArea.startX, this.brandArea.startY, this.brandArea.width, this.brandArea.height)
     }
 
-    if (this.trashArea.startY + this.trashArea.height <= canvas.height){
+    if (this.trashArea.startY + this.trashArea.height <= canvas.height / window.devicePixelRatio){
       ctx.drawImage(this.databus.imgList['trash'], this.trashArea.startX, this.trashArea.startY, this.trashArea.width, this.trashArea.height)
     }
-    if (this.lady.locy + this.lady.target_h <= canvas.height){
+    if (this.lady.locy + this.lady.target_h <= canvas.height / window.devicePixelRatio){
       this.lady.render(ctx)
     }
-    if(this.gentle.locy + this.gentle.target_h<= canvas.height){
+    if (this.gentle.locy + this.gentle.target_h <= canvas.height / window.devicePixelRatio){
       this.gentle.render(ctx)
     }
     this.move.render(ctx)
@@ -233,7 +233,7 @@ export default class SceneTwo {
         else{
           this.trees[i].locy += 0.3 * r_w
         }
-        if (this.trees[i].height + this.trees[i].locy >= canvas.height){
+        if (this.trees[i].height + this.trees[i].locy >= canvas.height / window.devicePixelRatio){
           this.trees.pop()
         }
       }
