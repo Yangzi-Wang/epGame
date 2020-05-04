@@ -32,10 +32,10 @@ export default class SceneFour {
       height: 139 * 1.2 * r_w
     }
     this.nextSceneBtnArea = {
-      startX: canvas.width / 2 - 300 * r_w,
-      startY: canvas.height / 2 - 150 * r_w,
-      width: 600 * r_w,
-      height: 300 * r_w
+      startX: canvas.width / 2 - 259/2 * r_h,
+      startY: canvas.height / 2 - 114/2 * r_h,
+      width: 259 * r_h,
+      height: 114 * r_h
     }
     this.targetArea = {
       startX: 360 * r_w + 70,
@@ -109,8 +109,13 @@ export default class SceneFour {
       // ctx.fillRect(this.targetArea.startX, this.targetArea.startY, this.targetArea.width, this.targetArea.height)
     }
     if(this.finished){
-      ctx.fillStyle = '#1aad19'
-    ctx.fillRect(this.nextSceneBtnArea.startX, this.nextSceneBtnArea.startY, this.nextSceneBtnArea.width, this.nextSceneBtnArea.height)
+      ctx.fillStyle = '#ffffff'
+      ctx.globalAlpha = 0.3
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.globalAlpha = 1
+      ctx.drawImage(this.databus.imgList['btn01'], 
+      11,159,259,114,
+      this.nextSceneBtnArea.startX, this.nextSceneBtnArea.startY, this.nextSceneBtnArea.width, this.nextSceneBtnArea.height)
     }
 
     // ctx.fillStyle = '#1aad19'

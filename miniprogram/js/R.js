@@ -1,5 +1,5 @@
-const base_url = 'cloud://epgame-96p1p.6570-epgame-96p1p-1302001596/'
-// const base_url = 'images/'
+// const base_url = 'cloud://epgame-96p1p.6570-epgame-96p1p-1302001596/'
+const base_url = 'images/'
 const images = [
   {
     'name': 'boy',
@@ -96,6 +96,14 @@ const images = [
   {
     'name': 'txt4',
     'fileID': base_url + 'txt4.png'
+  },
+  {
+    'name': 'btn01',
+    'fileID': base_url + 'btn01.png'
+  },
+  {
+    'name': 'gameover',
+    'fileID': base_url + 'gameover.png'
   },
 ]
 

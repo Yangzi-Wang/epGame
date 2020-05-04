@@ -22,10 +22,10 @@ export default class SceneFive {
     this.step8 = new MyAnimation(databus.imgList['step8'], 5, 2000, 329)
 
     this.btnArea = {
-      startX: canvas.width / 2 - 50,
-      startY: 100,
-      width: 100,
-      height: 50
+      startX: canvas.width / 2 - 259/2 * r_h,
+      startY: canvas.height/2 - 114/2 * r_h,
+      width: 259*r_h,
+      height: 114*r_h
     }
     this.soapArea = {
       startX: 70 * r_w,
@@ -33,19 +33,34 @@ export default class SceneFive {
       width: 380 * r_h,
       height: 300 * r_h
     }
+    this.restartArea = {
+      startX: canvas.width / 2 - 259 * r_h - 20,
+      startY: canvas.height / 2 +20,
+      width: 259 * r_h,
+      height: 114 * r_h
+    }
+    this.epclassArea = {
+      startX: canvas.width / 2 + 20,
+      startY: canvas.height / 2 +20,
+      width: 259 * r_h,
+      height: 114 * r_h
+    }
     this.washHandler = this.wash.bind(this)
     this.soapHandler = this.pickupSoap.bind(this)
     this.moveHandler = this.moveSoap.bind(this)
+    this.gameoverHandler = this.gameover.bind(this)
   }
   init() {
     this.step1.init(ani_x, ani_y, ani_w, ani_h)
-    this.step2.needsoap = true
     this.step2.init(ani_x, ani_y, ani_w, ani_h)
     this.step4.init(ani_x + 160 * r_w, ani_y, ani_w / 2, ani_h)
     this.step5.init(ani_x + 50 * r_w, ani_y, ani_w, ani_h)
     this.step6.init(ani_x, ani_y, ani_w, ani_h)
     this.step7.init(ani_x, ani_y, ani_w, ani_h)
     this.step8.init(ani_x, ani_y, ani_w, ani_h)
+    this.step1.state = 'first'
+    this.step2.needsoap = true
+
 
     this.animations = []
     this.animations.push(this.step1)
@@ -63,9 +78,10 @@ export default class SceneFive {
     this.bindEvent()
 
     this.pending = true
-
+  
     this.makesoap = false
     
+    this.hasbindoverEvent = false
   }
   render(ctx) {
     ctx.drawImage(this.databus.imgList['bg5'],
@@ -76,18 +92,51 @@ export default class SceneFive {
     ctx.drawImage(this.databus.imgList['soap'],
       this.soapArea.startX, this.soapArea.startY, this.soapArea.width, this.soapArea.height)
 
+
     if(!this.pending&&!this.currentAni.isPlaying&&!this.makesoap) {
       this.pending = true
       return
     }
 
     if(this.pending){
-      ctx.fillRect(this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
+      ctx.fillStyle = '#ffffff'
+      ctx.globalAlpha = 0.3
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.globalAlpha = 1
+      if (this.currentAni.state === 'last') {
+        ctx.fillStyle = '#ffffff'
+        ctx.globalAlpha = 0.3
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.globalAlpha = 1
+        ctx.drawImage(this.databus.imgList['gameover'],
+          canvas.width / 2 - 1116 / 2 * r_h, canvas.height / 2 - 509 / 2 * r_h, 1116 * r_h, 509 * r_h)
+        ctx.drawImage(this.databus.imgList['btn01'],
+          573, 15, 259, 114,
+          this.restartArea.startX, this.restartArea.startY, this.restartArea.width, this.restartArea.height)
+        ctx.drawImage(this.databus.imgList['btn01'],
+          292, 15, 259, 114,
+          this.epclassArea.startX, this.epclassArea.startY, this.epclassArea.width, this.epclassArea.height)
+      }else if(this.currentAni.state ==='first'){
+        ctx.drawImage(this.databus.imgList['btn01'], 
+        292,159,259,114,
+        this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
+      }else{
+        ctx.drawImage(this.databus.imgList['btn01'],
+          573, 159, 259, 114,
+          this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
+      }
+      
     }
   }
   update() {
     if (this.databus.frame % this.currentAni.interval === 0)
       this.currentAni.update()
+
+    if(this.animations.length === 0 && this.pending && !this.hasbindoverEvent){
+      this.databus._event.on('touchstart', this.gameoverHandler)
+      this.step1.state = 'last'
+      this.hasbindoverEvent = true
+    }
   }
   bindEvent() {
     this.databus._event.on('touchstart', this.washHandler)
@@ -109,19 +158,20 @@ export default class SceneFive {
       && y <= area.startY + area.height) {
       this.pending = false
 
-      if (this.animations.length === 0) {
+      if (this.animations.length === 1) {
         this.databus._event.off('touchstart', this.washHandler)
-        this.databus.changeScene('epClass')
+               
         // console.log(this.databus._event)
-        return
       }
       if (this.animations[0].needsoap){
         this.databus._event.on('touchstart', this.soapHandler)
         this.makesoap = true
+        
       }else{
         this.currentAni = this.animations.shift()
         this.currentAni.playAnimation(0, false, 20)
       }
+      if (this.step1.state ==='first') this.step1.state = ''
     }
   }
   pickupSoap(e){
@@ -165,6 +215,30 @@ export default class SceneFive {
     this.soapArea.startX = 70 * r_w
     this.soapArea.startY = 40 * r_w
     this.databus._event.off('touchmove', this.moveHandler)
+  }
+  gameover(e) {
+    e.preventDefault()
+
+    let x = e.touches[0].clientX
+    let y = e.touches[0].clientY
+
+    let area = this.restartArea
+    let area2 = this.epclassArea
+    
+    if (x >= area.startX
+      && x <= area.startX + area.width
+      && y >= area.startY
+      && y <= area.startY + area.height) {
+      this.databus._event.off('touchstart', this.gameoverHandler)
+      this.databus.changeScene('startPage')
+    }
+    if (x >= area2.startX
+      && x <= area2.startX + area2.width
+      && y >= area2.startY
+      && y <= area2.startY + area2.height) {
+      this.databus._event.off('touchstart', this.gameoverHandler)
+      this.databus.changeScene('epClass')
+    }
   }
 }
 
