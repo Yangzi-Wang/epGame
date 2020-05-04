@@ -11,7 +11,7 @@ import EpClass from './scene/epclass'
 
 let instance
 let ctx = canvas.getContext('2d')
-let images = {
+/*let images = {
   'boy': 'images/role-boy.png',
   'selectedboy': 'images/selectedboy.png',
   'girl': 'images/role-girl.png',
@@ -43,8 +43,8 @@ let images = {
   'mstep2': 'images/mstep2.png',
   'mstep3': 'images/mstep3.png',
   'out': 'images/out.png'
-}
-//import images from './R.js'
+}*/
+import images from './R.js'
 
 /**
  * 全局状态管理器
@@ -104,11 +104,10 @@ export default class DataBus {
   loadAllResource2(callback) {
     let that = this
     let done = 0
-    for (let key in images) {
+    for (let obj of images) {
       
-          that.imgList[key] = new Image()
-          that.imgList[key].src = images[key]
-          // that.process = Math.round(done/images.length*100)
+      that.imgList[obj.name] = new Image()
+      that.imgList[obj.name].src = obj.fileID
     }
     callback()
   }
