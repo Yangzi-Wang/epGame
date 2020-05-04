@@ -80,6 +80,7 @@ export default class SelectRole {
     this.databus._event.on('touchstart', this.confirmHandler)
     this.databus._event.on('touchstart', this.selectHandler)
   }
+  
   confirm(e) {
     if(this.role===-1) return
     
@@ -94,10 +95,16 @@ export default class SelectRole {
       && x <= area.startX + area.width
       && y >= area.startY
       && y <= area.startY + area.height) {
+<<<<<<< HEAD
       this.databus.changeScene('sceneOne')
+=======
+
+      //this.databus.changeScene('sceneThree')
+>>>>>>> f85d79ff81ef654a961c1e04062b210c356d6511
       this.databus._event.off('touchstart', this.selectHandler)
       this.databus._event.off('touchstart', this.confirmHandler)
       this.databus.role = this.role
+      this.databus.changeScene('sceneOne')
     }
   }
   selectHandler(e){

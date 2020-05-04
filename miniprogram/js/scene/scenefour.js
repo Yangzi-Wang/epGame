@@ -122,11 +122,11 @@ export default class SceneFour {
     // ctx.fillRect(this.zoominArea.startX, this.zoominArea.startY, this.zoominArea.width, this.zoominArea.height)
 
     if (this.role === 0) {
-      // this.selectedboy.render(ctx)
+       //this.selectedboy.render(ctx)
     } 
 
     if (this.role === 1) {
-      // this.selectedgirl.render(ctx)
+       //this.selectedgirl.render(ctx)
     } 
   }
   update() {

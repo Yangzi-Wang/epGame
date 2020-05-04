@@ -64,6 +64,7 @@ export default class MyAnimation {
     if(reset) this.index = 0
   }
 
+
   // 帧遍历
   update() {
     if(this.isPlaying){

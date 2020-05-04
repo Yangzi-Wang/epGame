@@ -10,6 +10,7 @@ let ctx   = canvas.getContext('2d')
   //   如不填则使用默认环境（第一个创建的环境）
   // env: 'epgame-96p1p',
 // })
+
 //const db = wx.cloud.database()
 
 let databus = new DataBus()

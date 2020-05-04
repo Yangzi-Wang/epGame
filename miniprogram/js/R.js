@@ -105,6 +105,92 @@ const images = [
     'name': 'gameover',
     'fileID': base_url + 'gameover.png'
   },
+  {
+    'name':'window',
+    'fileID':base_url + 'window.png'
+  },
+  {
+    'name': 'clock',
+    'fileID': base_url + 'clock.png'
+  },
+  {
+    'name': 'maskg1',
+    'fileID': base_url + 'maskg1.png'
+  },
+  {
+    'name': 'maskg2',
+    'fileID': base_url + 'maskg2.png'
+  },
+  {
+    'name': 'maskg3',
+    'fileID': base_url + 'maskg3.png'
+  },
+  {
+    'name': 'sleepgirl',
+    'fileID': base_url + 'sleepgirl.png'
+  },
+  {
+    'name': 'ground',
+    'fileID': base_url + 'ground.png'
+  },
+  {
+    'name': 'sky',
+    'fileID': base_url + 'sky.png'
+  },
+  {
+    'name': 'line',
+    'fileID': base_url + 'line.png'
+  },
+  {
+    'name': 'tree1',
+    'fileID': base_url + 'tree1.png'
+  },
+  {
+    'name': 'trash',
+    'fileID': base_url + 'trash.png'
+  },
+  {
+    'name': 'brand',
+    'fileID': base_url + 'brand.png'
+  },
+  {
+    'name': 'lady',
+    'fileID': base_url + 'lady.png'
+  },
+  {
+    'name': 'gentle',
+    'fileID': base_url + 'gentle.png'
+  },
+  {
+    'name': 'movegirl',
+    'fileID': base_url + 'movegirl.png'
+  },
+  {
+    'name': 'left',
+    'fileID': base_url + 'left.png'
+  },
+  {
+    'name': 'right',
+    'fileID': base_url + 'right.png'
+  },
+  {
+    'name': 'mstep1',
+    'fileID': base_url + 'mstep1.png'
+  },
+  {
+    'name': 'mstep2',
+    'fileID': base_url + 'mstep2.png'
+  },
+  {
+    'name': 'mstep3',
+    'fileID': base_url + 'mstep3.png'
+  },
+  {
+    'name': 'out',
+    'fileID': base_url + 'out.png'
+  }
+
+
 ]
 
 export default images
