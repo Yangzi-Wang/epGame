@@ -15,7 +15,7 @@ export default class SelectRole {
     }
 
     this.animations = []
-    this.boy = new MyAnimation(databus.imgList['boy'], 7, 2000, 441)
+    this.boy = new MyAnimation(databus.imgList['boy'], 7, 1953, 436)
     this.animations.push(this.boy)
     this.selectedboy = new MyAnimation(databus.imgList['selectedboy'], 9, 2000, 343)
     this.animations.push(this.selectedboy)

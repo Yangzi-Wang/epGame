@@ -21,6 +21,10 @@ export default class StartPage {
     this.animations = []
     // console.log(this.databus.ready)
     if (this.databus.ready) this.bindEvent()
+    this.databus.audioList['bgmusic'].volume = 0.3
+    this.databus.audioList['bgmusic'].autoplay = true
+    this.databus.audioList['bgmusic'].loop = true
+    console.log(this.databus.audioList['bgmusic'])
   }
   render(ctx) {
     //ctx.drawImage()

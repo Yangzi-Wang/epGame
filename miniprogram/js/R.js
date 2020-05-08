@@ -114,20 +114,16 @@ const images = [
     'fileID': base_url + 'clock.png'
   },
   {
-    'name': 'maskg1',
-    'fileID': base_url + 'maskg1.png'
-  },
-  {
-    'name': 'maskg2',
-    'fileID': base_url + 'maskg2.png'
-  },
-  {
-    'name': 'maskg3',
-    'fileID': base_url + 'maskg3.png'
+    'name': 'mask',
+    'fileID': base_url + 'mask.png'
   },
   {
     'name': 'sleepgirl',
     'fileID': base_url + 'sleepgirl.png'
+  },
+  {
+    'name': 'sleepboy',
+    'fileID': base_url + 'sleepboy.png'
   },
   {
     'name': 'ground',
@@ -166,31 +162,17 @@ const images = [
     'fileID': base_url + 'movegirl.png'
   },
   {
-    'name': 'left',
-    'fileID': base_url + 'left.png'
+    'name': 'moveboy',
+    'fileID': base_url + 'moveboy.png'
   },
   {
-    'name': 'right',
-    'fileID': base_url + 'right.png'
+    'name': 'rabbit',
+    'fileID': base_url + 'rabbit.png'
   },
   {
-    'name': 'mstep1',
-    'fileID': base_url + 'mstep1.png'
-  },
-  {
-    'name': 'mstep2',
-    'fileID': base_url + 'mstep2.png'
-  },
-  {
-    'name': 'mstep3',
-    'fileID': base_url + 'mstep3.png'
-  },
-  {
-    'name': 'out',
-    'fileID': base_url + 'out.png'
+    'name': 'btnfs',
+    'fileID': base_url + 'btnfs.png'
   }
-
-
 ]
 
 export default images

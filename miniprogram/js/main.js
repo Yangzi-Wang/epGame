@@ -3,6 +3,7 @@ import DataBus    from './databus'
 
 let ctx   = canvas.getContext('2d')
 
+
 // wx.cloud.init({
   // env 参数说明：
   //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源

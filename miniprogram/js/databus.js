@@ -16,8 +16,6 @@ let ctx = canvas.getContext('2d')
   'selectedboy': 'images/selectedboy.png',
   'girl': 'images/role-girl.png',
   'boy': 'images/role-boy.png',
-  'ogirl': 'images/stand-girl.png',
-  'oboy': 'images/stand-boy.png',
   'selectedgirl': 'images/selectedgirl.png',
   'bedroomBg': 'images/bedroom.jpg',
   'window': 'images/window.png',
@@ -45,6 +43,7 @@ let ctx = canvas.getContext('2d')
   'out': 'images/out.png'
 }*/
 import images from './R.js'
+import audio from './M.js'
 
 /**
  * 全局状态管理器
@@ -60,6 +59,7 @@ export default class DataBus {
     this._event = new Event()
 
     this.imgList = {}
+    this.audioList = {}
     this.sceneObj = {}
     this.sceneObj['startPage'] = new StartPage(instance)
     // this.sceneObj.startPage.init()
@@ -108,6 +108,11 @@ export default class DataBus {
       
       that.imgList[obj.name] = new Image()
       that.imgList[obj.name].src = obj.fileID
+    }
+
+    for(let obj of audio) {
+      that.audioList[obj.name] = wx.createInnerAudioContext()
+      that.audioList[obj.name].src = obj.fileID
     }
     callback()
   }
