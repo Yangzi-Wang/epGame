@@ -19,10 +19,10 @@ export default class SceneThree {
     }
 
     this.nextArea = {
-      startX: canvas.width / 2 - 50,
+      startX: canvas.width / 2 - 259/2 * r_h,
       startY: canvas.height / 2,
-      width: 100,
-      height: 50
+      width: 259*r_h,
+      height: 114*r_h
     }
 
     this.animations = []
@@ -45,9 +45,22 @@ export default class SceneThree {
         ani.render(ctx)
     })
     
+    !this.finished&&ctx.drawImage(this.databus.imgList['btn01'], 
+    292,523,190,129,
+    this.btnArea.startX - 190*r_h, this.btnArea.startY, 190*0.8*r_h, 129*0.8*r_h)
+
     // ctx.fillRect(this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
-    if (this.finished && !this.cabinet.isPlaying)
-    ctx.fillRect(this.nextArea.startX, this.nextArea.startY, this.nextArea.width, this.nextArea.height)
+    if (this.finished && !this.cabinet.isPlaying){
+      ctx.fillStyle = '#ffffff'
+      ctx.globalAlpha = 0.3
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.globalAlpha = 1
+
+      ctx.drawImage(this.databus.imgList['btn01'],
+        11, 523, 259, 114,
+        this.nextArea.startX, this.nextArea.startY, this.nextArea.width, this.nextArea.height)
+    }
+      
   }
   update() {
     this.animations.forEach((ani) => {

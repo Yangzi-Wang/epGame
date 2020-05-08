@@ -8,14 +8,14 @@ export default class SelectRole {
     this.databus = databus
 
     this.btnArea = {
-      startX: canvas.width / 2 - 50,
+      startX: canvas.width / 2 - 259/2 * r_h,
       startY: 550 * r_h,
-      width: 100,
-      height: 50
+      width: 259 * r_h,
+      height: 114 * r_h
     }
 
     this.animations = []
-    this.boy = new MyAnimation(databus.imgList['boy'], 7, 2000, 441)
+    this.boy = new MyAnimation(databus.imgList['boy'], 7, 1953, 436)
     this.animations.push(this.boy)
     this.selectedboy = new MyAnimation(databus.imgList['selectedboy'], 9, 2000, 343)
     this.animations.push(this.selectedboy)
@@ -56,9 +56,10 @@ export default class SelectRole {
     ctx.globalAlpha = 0.3
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    ctx.fillStyle = '#ff0000'
     ctx.globalAlpha = 1
-    ctx.fillRect(this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
+    ctx.drawImage(this.databus.imgList['btn01'], 
+      11, 15, 259, 114, 
+      this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
 
     if(this.role===0){
       this.selectedboy.render(ctx)
@@ -94,8 +95,6 @@ export default class SelectRole {
       && x <= area.startX + area.width
       && y >= area.startY
       && y <= area.startY + area.height) {
-
-      //this.databus.changeScene('sceneThree')
       this.databus._event.off('touchstart', this.selectHandler)
       this.databus._event.off('touchstart', this.confirmHandler)
       this.databus.role = this.role

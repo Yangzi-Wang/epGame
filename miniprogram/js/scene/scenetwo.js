@@ -18,6 +18,9 @@ export default class SceneTwo {
     this.animations.push(this.lady)
     this.gentle = new MyAnimation(this.databus.imgList['gentle'], 5, 1366, 539)
     this.animations.push(this.gentle)
+    this.rabbit = new MyAnimation(databus.imgList['rabbit'], 5, 1370, 415)
+    this.animations.push(this.rabbit)
+
 
     this.lineArea = {
       startX: 20 * r_w,
@@ -51,6 +54,13 @@ export default class SceneTwo {
       startY: canvas.height - 518 * 0.6 * r_h,
       width: 342 * 0.6 * r_w,
       height: 518 * 0.6 * r_h
+    }
+
+    this.rabbitArea = {
+      startX: canvas.width / 2 + 120 * r_w,
+      startY: 450 * r_h,
+      width: 273.2 * r_w,
+      height: 415 * r_h
     }
 
     this.ladyArea = {
@@ -95,13 +105,14 @@ export default class SceneTwo {
 
   init(){
     this.role = this.databus.role
-    this.run = true
+    this.run = false
     this.leftbtn  = false
     this.left = false
     this.rightbtn = false
     this.right  =false
     this.near = false
     this.vis = false
+    this.tip = true
     this.count = 401
     this.cycle = 0
     console.log(this.trees)
@@ -124,10 +135,18 @@ export default class SceneTwo {
     this.gentle.init(this.gentleArea.startX, this.gentleArea.startY, this.gentleArea.width, this.gentleArea.height)
     this.gentle.playAnimation(0, true, 20)
 
+    this.rabbit.init(this.rabbitArea.startX, this.rabbitArea.startY, this.rabbitArea.width, this.rabbitArea.height)
+    this.rabbit.playAnimation(0, true, 30)
+
     this.leftHandler = this.turnleft.bind(this)
     this.rightHandler = this.turnright.bind(this)
     this.nextHandler = this.nextscene.bind(this)
     this.bindEvent()
+    this.databus.audioList['avoid'].play()
+    this.databus.audioList['avoid'].onEnded((res)=> {
+      this.tip = false
+      this.run = true
+    })
   }
 
   render(ctx) {
@@ -137,7 +156,6 @@ export default class SceneTwo {
 
     //ctx.drawImage(this.databus.imgList['line'], this.lineArea.startX, this.lineArea.startY, this.lineArea.width, this.lineArea.height)
 
-    //ctx.drawImage(this.databus.imgList['tree1'], this.treeArea.startX, this.treeArea.startY, this.treeArea.width, this.treeArea.height)
     for (let i = 0; i < this.trees.length;i++){
       this.trees[i].render(ctx)
     }
@@ -155,11 +173,16 @@ export default class SceneTwo {
       this.gentle.render(ctx)
     }
     this.move.render(ctx)
+
+    if (this.tip) {
+      this.rabbit.render(ctx)
+    }
+
     if(this.leftbtn){
-      ctx.drawImage(this.databus.imgList['left'], this.leftArea.startX, this.leftArea.startY, this.leftArea.width, this.leftArea.height)
+      ctx.drawImage(this.databus.imgList['btnfs'],11,151,198,193, this.leftArea.startX, this.leftArea.startY, this.leftArea.width, this.leftArea.height)
     }
     if(this.rightbtn) {
-      ctx.drawImage(this.databus.imgList['right'], this.rightArea.startX, this.rightArea.startY, this.rightArea.width, this.rightArea.height)
+      ctx.drawImage(this.databus.imgList['btnfs'],335,151,198,193, this.rightArea.startX, this.rightArea.startY, this.rightArea.width, this.rightArea.height)
     }
   }
 
@@ -219,6 +242,8 @@ export default class SceneTwo {
         if ( (0.2 + this.cycle / 2000) >= 0.7){
           this.near = false
           this.run = false
+          this.tip = true
+          this.databus.audioList['arrive'].play()
           this.databus._event.on('touchstart', this.nextHandler)
         }
       }
@@ -243,34 +268,15 @@ export default class SceneTwo {
         console.log(this.trees)
       }
 
-      /*for(let i=0;i<5;i++){
-        this.trees[i].locx += 0.5125 * r_w
-        this.trees[i].locy += 0.3625 * r_w
-        this.cycle++
-      }
-      if (this.cycle == 200) {
-        this.cycle = 0
-        let temp = new Tree(this.databus.imgList['tree1'], this.treeArea.startX, this.treeArea.startY, this.treeArea.width, this.treeArea.height)
-        this.trees.pop()
-        this.trees.unshift(temp)
-      }*/
-
     
       this.count++
-      if(this.count==2000){
-        //this.run = false
-      }
-      /*if (this.treeArea.startX >= canvas.width){
-        console.log(canvas.width)
-        console.log(this.treeArea.startX)
-        console.log(this.count)
-      }*/
     }
   }
 
   bindEvent() {
 
   }
+
 
   turnleft(e) {
     e.preventDefault()

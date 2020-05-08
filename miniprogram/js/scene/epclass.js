@@ -9,16 +9,16 @@ export default class EpClass {
     this.databus = databus
 
     this.btnArea = {
-      startX: canvas.width - 160,
-      startY: canvas.height - 100,
-      width: 100,
-      height: 50
+      startX: canvas.width - 199 * 0.6* r_h - 20,
+      startY: canvas.height - 193 * 0.6* r_h - 20,
+      width: 199*0.6*r_h,
+      height: 193 * 0.6*r_h
     }
     this.backArea = {
-      startX: 60,
-      startY: 50,
-      width: 100,
-      height: 50
+      startX: 30,
+      startY: 20,
+      width: 196 * 0.6*r_h,
+      height: 194 * 0.6*r_h
     }
     this.bgArea = {
       startX: (canvas.width - canvas.height * 1333 / 750) / 2,
@@ -54,10 +54,14 @@ export default class EpClass {
     ctx.drawImage(this.databus.imgList['txt'+this.pageNo],
       this.txtArea.startX, this.txtArea.startY, this.txtArea.width, this.txtArea.height)
 
-    ctx.fillStyle = '#ff0000'
-    ctx.fillRect(this.backArea.startX, this.backArea.startY, this.backArea.width, this.backArea.height)
+    ctx.drawImage(this.databus.imgList['btn01'],
+        249,299,196,194,
+        this.backArea.startX, this.backArea.startY, this.backArea.width, this.backArea.height)
+
     if(this.pageNo<4)
-      ctx.fillRect(this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
+      ctx.drawImage(this.databus.imgList['btn01'],
+        474,299,199,193,
+        this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
     
   }
   update() {

@@ -8,10 +8,10 @@ export default class StartPage {
     this.databus = databus
 
     this.btnArea = {
-      startX: canvas.width / 2 - 100 * r_w,
+      startX: canvas.width / 2 - 196/2 * r_w,
       startY: canvas.height / 2,
-      width: 200 * r_w,
-      height: 100 * r_w
+      width: 196 * r_w,
+      height: 194 * r_w
     }
     this.eventHandler1 = this.nextScene.bind(this)
     this.hasEventBind = false
@@ -21,13 +21,18 @@ export default class StartPage {
     this.animations = []
     // console.log(this.databus.ready)
     if (this.databus.ready) this.bindEvent()
+    this.databus.audioList['bgmusic'].volume = 0.3
+    this.databus.audioList['bgmusic'].autoplay = true
+    this.databus.audioList['bgmusic'].loop = true
+    console.log(this.databus.audioList['bgmusic'])
   }
   render(ctx) {
     //ctx.drawImage()
 
     if(this.databus.ready){
-      ctx.fillStyle = '#1aad19'
-      ctx.fillRect(this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
+      ctx.drawImage(this.databus.imgList['btn01'],
+      11,299,196,194,
+        this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
     }else{
 
       drawCricle(ctx, this.databus.process);

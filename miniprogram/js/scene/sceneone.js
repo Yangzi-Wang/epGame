@@ -7,13 +7,15 @@ export default class SceneOne {
   constructor(databus){
     this.databus = databus
     this.animations = []
-    //this.sleep = new Myanimation(databus.imgList[`sleep${this.role}`],3,1764,249)
-    //this.animations.push(this.sleep)
+
     this.clock = new MyAnimation(this.databus.imgList['clock'], 5, 410, 68)
     this.animations.push(this.clock)
 
     this.window = new MyAnimation(databus.imgList['window'],4,1366,295)
     this.animations.push(this.window)
+
+    this.rabbit = new MyAnimation(databus.imgList['rabbit'],5,1370,415)
+    this.animations.push(this.rabbit)
 
 
     this.windowArea = {
@@ -24,11 +26,12 @@ export default class SceneOne {
     }
 
     this.maskArea = {
+      imgX: 46,
+      dx: 262,
       startX: canvas.width - 150 * r_w ,
       startY: 250 * r_h,
       width: 221* 0.65 * r_w,
       height: 103 * 0.65 * r_h,
-      maskSrc: this.databus.imgList['maskg1']
     }
 
     this.clockArea = {
@@ -52,6 +55,13 @@ export default class SceneOne {
       height: 484 * 0.6 * r_h
     }
 
+    this.rabbitArea = {
+      startX: canvas.width / 2 + 100 * r_w,
+      startY: 300 * r_h,
+      width: 273 * r_w,
+      height: 415 * r_h
+    }
+
     this.targetArea = {
       startX: canvas.width / 2 - 150 * r_w,
       startY: 400 * r_h,
@@ -60,6 +70,8 @@ export default class SceneOne {
     }
 
     this.beltBtnArea = {
+      imgX: 11,
+      dx: 258 + 81,
       startX: canvas.width/2 - 10,
       startY: 380 * r_h,
       width: 258 * 0.5 * r_w,
@@ -70,7 +82,7 @@ export default class SceneOne {
       startX: canvas.width / 2 - 259 / 2 * r_w,
       startY: canvas.height / 2 - 144 / 2 * r_h,
       width: 259 * r_w,
-      height: 144 * r_h
+      height: 114 * r_h
     }
   }
 
@@ -82,10 +94,10 @@ export default class SceneOne {
     }else{
       this.name = 'boy'
     }
-    this.sleep = new MyAnimation(this.databus.imgList[`sleep${this.name}`], 3, 1764, 249)
+    this.sleep = new MyAnimation(this.databus.imgList[`sleep${this.name}`], 3, 1766, 249)
     this.animations.push(this.sleep)
 
-    this.man = new MyAnimation(this.databus.imgList[`o${this.name}`], 7, 1953, 436)
+    this.man = new MyAnimation(this.databus.imgList[this.name], 7, 1953, 436)
     this.animations.push(this.man)
 
     this.window.init(this.windowArea.startX, this.windowArea.startY, this.windowArea.width,this.windowArea.height)
@@ -102,14 +114,17 @@ export default class SceneOne {
     this.man.init(this.girlArea.startX,this.girlArea.startY,this.girlArea.width,this.girlArea.height)
     this.man.playAnimation(0, true, 20)
 
+    this.rabbit.init(this.rabbitArea.startX, this.rabbitArea.startY, this.rabbitArea.width, this.rabbitArea.height)
+    this.rabbit.playAnimation(0, true, 30)
+
     this.wake = false
     this.big = false
     this.cheaked = true
     this.cover = true
     this.close = false
     this.bol = true
+    this.tip = true
     this.maskcount = 1
-    this.btn = this.databus.imgList['mstep1']
     this.downHandler = this.putdown.bind(this)
     this.windowHandler = this.windowtouch.bind(this)
     this.pickHandler  = this.pickmask.bind(this)
@@ -132,6 +147,9 @@ export default class SceneOne {
 
     this.window.render(ctx)
     this.clock.render(ctx)
+    if(this.tip){
+      this.rabbit.render(ctx)
+    }
     if (this.wake) {
       this.man.render(ctx)
     } else {
@@ -145,7 +163,7 @@ export default class SceneOne {
     }
 
     if(this.big && !this.close){
-      ctx.drawImage(this.btn, this.beltBtnArea.startX, this.beltBtnArea.startY, this.beltBtnArea.width, this.beltBtnArea.height)
+      ctx.drawImage(this.databus.imgList['btnfs'],this.beltBtnArea.imgX,0,258,113, this.beltBtnArea.startX, this.beltBtnArea.startY, this.beltBtnArea.width, this.beltBtnArea.height)
     }
     if(this.close && this.cover){
       this.cover = false
@@ -154,18 +172,11 @@ export default class SceneOne {
     }
 
     if(this.close) {
-      ctx.drawImage(this.databus.imgList['out'], this.nextSceneBtnArea.startX, this.nextSceneBtnArea.startY, this.nextSceneBtnArea.width, this.nextSceneBtnArea.height)
+      ctx.drawImage(this.databus.imgList['btnfs'],690,151,259,114, this.nextSceneBtnArea.startX, this.nextSceneBtnArea.startY, this.nextSceneBtnArea.width, this.nextSceneBtnArea.height)
     }
 
-    ctx.drawImage(this.maskArea.maskSrc, this.maskArea.startX, this.maskArea.startY, this.maskArea.width, this.maskArea.height)
+    ctx.drawImage(this.databus.imgList['mask'],this.maskArea.imgX,0,220,126, this.maskArea.startX, this.maskArea.startY, this.maskArea.width, this.maskArea.height)
 
-
-    //if(this.role==0){
-      //this.sleepboy.render(ctx)
-    //}
-    //else{
-      //this.sleepgirl.render(ctx)
-    //}
   }
 
   update() {
@@ -176,8 +187,11 @@ export default class SceneOne {
   }
 
   bindEvent() {
-    this.databus._event.on('touchstart',this.windowHandler)
-    this.databus._event.on('touchstart',this.pickHandler)
+    this.databus.audioList['window'].play()
+    this.databus.audioList['window'].onEnded((res) => {
+      this.tip = false
+      this.databus._event.on('touchstart', this.windowHandler)
+    })
   }
 
   //打开窗户
@@ -191,6 +205,19 @@ export default class SceneOne {
         && y <= this.window.locy + this.window.target_h) {
         this.window.playAnimation(0, false, 30)
         this.wake = true
+        this.databus.audioList['window'].destroy()
+        this.databus.audioList['mother'].play()
+        this.databus.audioList['mother'].onEnded((res)=>{
+          this.tip = true
+          this.databus.audioList['pickmask'].play()
+          this.databus.audioList['pickmask'].onEnded((res)=>{
+            this.databus.audioList['mask'].play()
+            this.databus.audioList['mask'].onEnded((res)=>{
+              this.tip = false
+              this.databus._event.on('touchstart', this.pickHandler)
+            })
+          })
+        })
         this.databus._event.off('touchstart',this.windowHandler)
       }
   }
@@ -230,12 +257,23 @@ export default class SceneOne {
   putdown() {
     this.big = true
     if(this.role==1){
-      this.maskArea.startX = canvas.width / window.devicePixelRatio / 2 - 195 * r_w
+      this.maskArea.startX = canvas.width / window.devicePixelRatio / 2 - 198 * r_w
       this.maskArea.startY  = 385 * r_h
     }else{
       this.maskArea.startX = canvas.width / window.devicePixelRatio / 2 - 195 * r_w
       this.maskArea.startY = 395 * r_h
     }
+    this.tip = true
+    this.databus.audioList['maskway'].play()
+    this.databus.audioList['maskway'].onEnded((res)=> {
+      this.tip = false
+    })
+    this.rabbit.locx= canvas.width / window.devicePixelRatio / 2 - 360 * r_w
+    this.rabbit.locy = 400 * r_h
+    this.rabbit.target_w = 273 * 0.5 * r_w
+    this.rabbit.target_h = 415 * 0.5 * r_h
+
+
     this.databus._event.off('touchmove',this.moveHandler)
     this.databus._event.off('touchend',this.downHandler)
     this.databus._event.on('touchstart', this.turnHandler)
@@ -254,12 +292,19 @@ export default class SceneOne {
       && y <= (area.startY - 250 * r_h)*2 + area.height*2) {
       ++this.maskcount
       if(this.maskcount > 3){
+        this.databus.audioList['maskway'].destroy()
+        this.databus.audioList['goout'].play()
         this.close = true
         this.databus._event.on('touchstart',this.nextHandler)
         this.databus._event.off('touchstart',this.turnHandler)
+        this.rabbit.locx = this.rabbitArea.startX
+        this.rabbit.locy = this.rabbitArea.startY
+        this.rabbit.target_w = this.rabbitArea.width
+        this.rabbit.target_h = this.rabbitArea.height
+        this.tip = true
       }else{
-        this.btn = this.databus.imgList[`mstep${this.maskcount}`]
-        this.maskArea.maskSrc = this.databus.imgList[`maskg${this.maskcount}`]
+        this.beltBtnArea.imgX += this.beltBtnArea.dx
+        this.maskArea.imgX +=this.maskArea.dx
       }
     }
   }
@@ -275,6 +320,7 @@ export default class SceneOne {
       && x <= area.startX + area.width
       && y >= area.startY
       && y <= area.startY + area.height){
+      this.databus.audioList['goout'].destroy()
       this.databus._event.off('touchstart')
       this.databus._event.off('touchmove')
       this.databus._event.off('touchend')
