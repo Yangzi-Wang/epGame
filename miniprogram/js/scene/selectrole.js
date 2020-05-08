@@ -98,7 +98,7 @@ export default class SelectRole {
       this.databus._event.off('touchstart', this.selectHandler)
       this.databus._event.off('touchstart', this.confirmHandler)
       this.databus.role = this.role
-      this.databus.changeScene('sceneOne')
+      this.databus.changeScene('sceneThree')
     }
   }
   selectHandler(e){
