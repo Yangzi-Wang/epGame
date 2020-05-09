@@ -25,7 +25,7 @@ export default class Main {
     // 维护当前requestAnimationFrame的id
     this.aniId    = 0
 
-    databus.loadAllResource2(function () {
+    databus.loadAllResource(function () {
       databus.createScenes()
     })
     this.restart()

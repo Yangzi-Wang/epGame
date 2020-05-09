@@ -34,7 +34,7 @@ export default class DataBus {
     this.sceneObj['startPage'] = new StartPage(instance)
     // this.sceneObj.startPage.init()
     this.ready = false  //资源是否加载完毕
-    this.process = 20
+    this.process = 0
   }
 
   reset() {

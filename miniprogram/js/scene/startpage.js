@@ -140,11 +140,11 @@ function drawProgress(ctx,percent){
   ctx.fillStyle = '#CC99FF';
   ctx.fillRect(canvas.width/2-l/2,canvas.height/2,l,5)
 
-  ctx.fillStyle = '#FF0066'; 
+  ctx.fillStyle = '#fdbf7d'; 
   ctx.fillRect(canvas.width / 2 - l / 2, canvas.height/2, l*percent/100, 5)
   // 填充文字				
   ctx.font = "normal 13pt Microsoft YaHei";
-  ctx.fillStyle = '#FF0066';
+  ctx.fillStyle = '#fdbf7d';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   // ctx.moveTo(canvas.width / 2, canvas.height / 2 + 20);
