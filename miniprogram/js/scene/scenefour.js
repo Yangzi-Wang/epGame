@@ -2,6 +2,7 @@ import MyAnimation from '../base/myanim.js'
 
 let r_w = canvas.width/1334
 let r_h = canvas.height/750
+let pr = window.devicePixelRatio
 
 let offcanvas = wx.createCanvas()
 offcanvas.width = 1333
@@ -17,6 +18,10 @@ export default class SceneFour {
     this.animations = []
     this.alcohol = new MyAnimation(databus.imgList['alcohol'], 4, 524, 139)
     this.animations.push(this.alcohol)
+
+    // this.boy = databus.sceneObj.selectRole.boy
+    // this.girl = databus.sceneObj.selectRole.girl
+    this.rabbit = databus.sceneObj.sceneThree.rabbit
 
     this.zoominArea = {
       startX: 460*r_w,
@@ -47,7 +52,12 @@ export default class SceneFour {
   init() {
     
     this.alcohol.init(this.alcoholArea.startX, this.alcoholArea.startY, this.alcoholArea.width, this.alcoholArea.height)
-    
+
+    // this.boy.init(250*r_w, 220*r_h, 319*0.6*r_h, 484*0.6*r_h)
+    // this.boy.playAnimation(0, true, 20)
+    this.rabbit.init(800 * r_w, 260 * r_h, 273 * 1.5 * r_h, 415 * 1.5 * r_h)
+    this.rabbit.playAnimation(0, true, 30)
+
     this.duration = 0   //消毒时长
     this.finished = false   //消毒完毕
     this.zooming = false    //拉近景
@@ -71,7 +81,13 @@ export default class SceneFour {
     this.pickupHandler = this.pickupAlcohol.bind(this)
     this.nextHandler = this.nextScene.bind(this)
 
-    this.bindEvent()
+    this.databus.audioList['4_1'].play()
+    this.playAudio = true
+    this.databus.audioList['4_1'].onEnded((res) => { 
+      this.bindEvent()
+      this.playAudio = false
+      })
+    
   }
   drawToOffcanvas(){
     offctx.drawImage(this.databus.imgList['bg4'],
@@ -86,7 +102,7 @@ export default class SceneFour {
 
     ctx.drawImage(offcanvas,
       this.bgx, this.bgy, this.bgw, this.bgh,
-      0, 0, canvas.width, canvas.height)
+      0, 0, canvas.width/pr, canvas.height/pr)
 
     if(this.zoomin){
       if(this.inTargetArea){
@@ -107,6 +123,11 @@ export default class SceneFour {
       }
       
       // ctx.fillRect(this.targetArea.startX, this.targetArea.startY, this.targetArea.width, this.targetArea.height)
+    } else if (!this.zooming){
+      //箭头
+       ctx.drawImage(this.databus.imgList['btn01'],
+        509, 532, 164, 112,
+        440 * r_w, 240*r_h, 164 * 0.4 * r_h, 112 * 0.4 * r_h)
     }
     if(this.finished){
       ctx.fillStyle = '#ffffff'
@@ -128,6 +149,9 @@ export default class SceneFour {
     if (this.role === 1) {
        //this.selectedgirl.render(ctx)
     } 
+    if (this.playAudio) {
+      this.rabbit.render(ctx)
+    }
   }
   update() {
     
@@ -135,6 +159,9 @@ export default class SceneFour {
       if (this.databus.frame % ani.interval === 0)
         ani.update()
     })
+
+    if (this.databus.frame % this.rabbit.interval === 0)
+      this.rabbit.update()
 
     if(this.zooming){
       this.bgx+=3
@@ -227,7 +254,13 @@ export default class SceneFour {
 
     if(this.finished){
       this.databus._event.off('touchstart', this.pickupHandler)
-      this.databus._event.on('touchstart', this.nextHandler)
+      this.databus.audioList['4_2'].play()
+      this.playAudio = true
+      this.databus.audioList['4_2'].onEnded((res) => { 
+        this.databus._event.on('touchstart', this.nextHandler)
+        this.playAudio = false
+       })
+      
     }
   }
   nextScene(e) {

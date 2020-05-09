@@ -1,6 +1,7 @@
 import MyAnimation from '../base/myanim.js'
 let r_w = canvas.width / 1334
 let r_h = canvas.height / 750
+let pr = window.devicePixelRatio
 
 export default class SelectRole {
   constructor(databus) {
@@ -9,7 +10,7 @@ export default class SelectRole {
 
     this.btnArea = {
       startX: canvas.width / 2 - 259/2 * r_h,
-      startY: 550 * r_h,
+      startY: 200 * r_h,
       width: 259 * r_h,
       height: 114 * r_h
     }
@@ -29,11 +30,11 @@ export default class SelectRole {
   }
   init() {
     //this.animations = []
-    let w = 319 * 0.9 * r_h
-    let h = 484 * 0.9 * r_h
-    let y = 100 * r_h
-    let bx = canvas.width / 2 - w - 20
-    let gx = canvas.width / 2 + 20
+    let w = 319 * 0.7 * r_h
+    let h = 484 * 0.7 * r_h
+    let y = 340 * r_h
+    let bx = canvas.width/pr / 2 - w - 20
+    let gx = canvas.width/pr / 2 + 20
     this.boy.init(bx, y, w, h)
     this.boy.playAnimation(0,true,20)
     this.selectedboy.init(bx, y, w, h)
@@ -46,12 +47,16 @@ export default class SelectRole {
 
     this.selectHandler = this.selectHandler.bind(this)
     this.confirmHandler = this.confirm.bind(this)
-    this.bindEvent()
+    
     this.role = -1
     
+    this.databus.audioList['selectrole'].play()
+    this.databus.audioList['selectrole'].onEnded((res) => {
+      this.bindEvent()
+    })
   }
   render(ctx) {
-    ctx.drawImage(this.databus.imgList['bedroomBg'],0,0,canvas.width,canvas.height)
+    ctx.drawImage(this.databus.imgList['bedroomBg'],0,0,canvas.width/pr,canvas.height/pr)
     ctx.fillStyle = '#ffffff'
     ctx.globalAlpha = 0.3
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -98,7 +103,11 @@ export default class SelectRole {
       this.databus._event.off('touchstart', this.selectHandler)
       this.databus._event.off('touchstart', this.confirmHandler)
       this.databus.role = this.role
-      this.databus.changeScene('sceneThree')
+      this.databus.changeScene('sceneFive')
+
+      canvas.width = canvas.width / window.devicePixelRatio
+      canvas.height = canvas.height / window.devicePixelRatio
+      canvas.getContext('2d').scale(1, 1)
     }
   }
   selectHandler(e){

@@ -2,6 +2,7 @@ import MyAnimation from '../base/myanim.js'
 
 let r_w = canvas.width / 1334
 let r_h = canvas.height / 750
+let pr = window.devicePixelRatio
 
 let ani_w = 550 * r_w
 let ani_h = 457 * r_h
@@ -20,6 +21,18 @@ export default class SceneFive {
     this.step6 = new MyAnimation(databus.imgList['step6'], 5, 2000, 329)
     this.step7 = new MyAnimation(databus.imgList['step7'], 5, 2000, 329)
     this.step8 = new MyAnimation(databus.imgList['step8'], 5, 2000, 329)
+
+    this.rabbit = new MyAnimation(databus.imgList['rabbit'], 5, 1370, 415)
+
+    this.audio = []
+    this.audio.push(databus.audioList['wash2'])
+    this.audio.push(databus.audioList['wash3'])
+    this.audio.push(databus.audioList['wash4'])
+    this.audio.push(databus.audioList['wash5'])
+    this.audio.push(databus.audioList['wash6'])
+    this.audio.push(databus.audioList['wash7'])
+    this.audio.push(databus.audioList['wash8'])
+    this.audio.push(databus.audioList['wash9'])
 
     this.btnArea = {
       startX: canvas.width / 2 - 259/2 * r_h,
@@ -51,6 +64,9 @@ export default class SceneFive {
     this.gameoverHandler = this.gameover.bind(this)
   }
   init() {
+    this.rabbit.init(80 * r_w, 260* r_h,273*1.5*r_h,415*1.5*r_h)
+    this.rabbit.playAnimation(0, true, 30)
+
     this.step1.init(ani_x, ani_y, ani_w, ani_h)
     this.step2.init(ani_x, ani_y, ani_w, ani_h)
     this.step4.init(ani_x + 160 * r_w, ani_y, ani_w / 2, ani_h)
@@ -74,18 +90,31 @@ export default class SceneFive {
 
     this.currentAni = this.step1
 
-    
-    this.bindEvent()
-
     this.pending = true
+    this.audioend = false
   
     this.makesoap = false
     
     this.hasbindoverEvent = false
+
+    this.databus.audioList['wash1'].play()
+    this.databus.audioList['wash1'].onEnded((res) => {
+      this.bindEvent()   
+      this.audioend = true   
+    })
+    // this.resize = false
+
   }
   render(ctx) {
+    // if (!this.resize) {
+    //   canvas.width = canvas.width * window.devicePixelRatio
+    //   canvas.height = canvas.height * window.devicePixelRatio
+    //   ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+
+    //   this.resize = true
+    // }
     ctx.drawImage(this.databus.imgList['bg5'],
-      0, 0, canvas.width, canvas.height)
+      0, 0, canvas.width/pr, canvas.height/pr)
 
     this.currentAni.render(ctx)
 
@@ -95,6 +124,15 @@ export default class SceneFive {
 
     if(!this.pending&&!this.currentAni.isPlaying&&!this.makesoap) {
       this.pending = true
+      if(this.audio.length!==0){
+        let au = this.audio.shift()
+        au.play()
+        this.audioend = false
+        au.onEnded((res) => {
+          this.audioend = true
+        })
+      }
+      
       return
     }
 
@@ -109,7 +147,7 @@ export default class SceneFive {
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         ctx.globalAlpha = 1
         ctx.drawImage(this.databus.imgList['gameover'],
-          canvas.width / 2 - 1116 / 2 * r_h, canvas.height / 2 - 509 / 2 * r_h, 1116 * r_h, 509 * r_h)
+          canvas.width/pr / 2 - 1116 / 2 * r_h, canvas.height/pr / 2 - 509 / 2 * r_h, 1116 * r_h, 509 * r_h)
         ctx.drawImage(this.databus.imgList['btn01'],
           573, 15, 259, 114,
           this.restartArea.startX, this.restartArea.startY, this.restartArea.width, this.restartArea.height)
@@ -127,22 +165,31 @@ export default class SceneFive {
       }
       
     }
+    if(!this.audioend){
+      this.rabbit.render(ctx)
+    }
   }
   update() {
+    if (this.databus.frame % this.rabbit.interval === 0)
+    this.rabbit.update()
+
     if (this.databus.frame % this.currentAni.interval === 0)
       this.currentAni.update()
 
     if(this.animations.length === 0 && this.pending && !this.hasbindoverEvent){
-      this.databus._event.on('touchstart', this.gameoverHandler)
       this.step1.state = 'last'
       this.hasbindoverEvent = true
+      this.databus.audioList['gameover'].play()
+      this.databus.audioList['gameover'].onEnded((res) => { 
+        this.databus._event.on('touchstart', this.gameoverHandler)
+       })
     }
   }
   bindEvent() {
     this.databus._event.on('touchstart', this.washHandler)
   }
   wash(e){
-    if(!this.pending){
+    if(!this.pending||!this.audioend){
       return
     }
     e.preventDefault()
@@ -211,6 +258,13 @@ export default class SceneFive {
       this.currentAni = this.step2
       this.step2.needsoap = false
       this.databus._event.off('touchstart', this.soapHandler)
+
+      let au = this.audio.length !== 0 && this.audio.shift()
+      au.play()
+      this.audioend = false
+      au.onEnded((res) => {
+        this.audioend = true
+      })
       }
     this.soapArea.startX = 70 * r_w
     this.soapArea.startY = 40 * r_w
@@ -231,6 +285,10 @@ export default class SceneFive {
       && y <= area.startY + area.height) {
       this.databus._event.off('touchstart', this.gameoverHandler)
       this.databus.changeScene('startPage')
+
+      // canvas.width = canvas.width / window.devicePixelRatio
+      // canvas.height = canvas.height / window.devicePixelRatio
+      // canvas.getContext('2d').scale(1, 1)
     }
     if (x >= area2.startX
       && x <= area2.startX + area2.width

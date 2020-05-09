@@ -1,6 +1,7 @@
 
 let r_w = canvas.width / 1334
 let r_h = canvas.height / 750
+let pr = window.devicePixelRatio
 
 export default class StartPage {
   constructor(databus){
@@ -9,27 +10,33 @@ export default class StartPage {
 
     this.btnArea = {
       startX: canvas.width / 2 - 196/2 * r_w,
-      startY: canvas.height / 2,
+      startY: canvas.height / 2 + 100*r_h,
       width: 196 * r_w,
       height: 194 * r_w
     }
     this.eventHandler1 = this.nextScene.bind(this)
     this.hasEventBind = false
+    this.canvasScale = false
 
   }
   init(){
     this.animations = []
     // console.log(this.databus.ready)
-    if (this.databus.ready) this.bindEvent()
-    this.databus.audioList['bgmusic'].volume = 0.3
-    this.databus.audioList['bgmusic'].autoplay = true
-    this.databus.audioList['bgmusic'].loop = true
-    console.log(this.databus.audioList['bgmusic'])
+    if (this.databus.ready){
+      this.bindEvent()
+    } 
+    
   }
   render(ctx) {
-    //ctx.drawImage()
+    if (this.databus.ready&&!this.canvasScale){
+canvas.width = canvas.width * window.devicePixelRatio
+      canvas.height = canvas.height * window.devicePixelRatio
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+      this.canvasScale = true
+    }
 
     if(this.databus.ready){
+      ctx.drawImage(this.databus.imgList['index'],0,0,canvas.width/pr,canvas.height/pr)
       ctx.drawImage(this.databus.imgList['btn01'],
       11,299,196,194,
         this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
@@ -50,7 +57,15 @@ export default class StartPage {
   }
   bindEvent(){
     if(!this.hasEventBind){
-      this.databus._event.on('touchstart', this.eventHandler1)
+      // this.databus.audioList['bgmusic'].volume = 0.2
+      this.databus.audioList['bgmusic'].autoplay = true
+      this.databus.audioList['bgmusic'].loop = true
+      // console.log(this.databus.audioList['bgmusic'])
+
+      this.databus.audioList['start'].play()
+      this.databus.audioList['start'].onEnded((res) => {
+        this.databus._event.on('touchstart', this.eventHandler1)
+      })
       this.hasEventBind = true
     }
     

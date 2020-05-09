@@ -11,37 +11,7 @@ import EpClass from './scene/epclass'
 
 let instance
 let ctx = canvas.getContext('2d')
-/*let images = {
-  'boy': 'images/role-boy.png',
-  'selectedboy': 'images/selectedboy.png',
-  'girl': 'images/role-girl.png',
-  'boy': 'images/role-boy.png',
-  'selectedgirl': 'images/selectedgirl.png',
-  'bedroomBg': 'images/bedroom.jpg',
-  'window': 'images/window.png',
-  'clock': 'images/clock.png',
-  'maskg1': 'images/maskg1.png',
-  'maskg2': 'images/maskg2.png',
-  'maskg3': 'images/maskg3.png',
-  'sleepgirl': 'images/sleepgirl.png',
-  'sleepboy': 'images/sleepboy.png',
-  'ground': 'images/ground.png',
-  'sky': 'images/sky.png',
-  'line': 'images/line.png',
-  'tree1': 'images/tree1.png',
-  'trash': 'images/trash.png',
-  'brand': 'images/brand.png',
-  'lady': 'images/lady.png',
-  'gentle': 'images/gentle.png',
-  'movegirl': 'images/movegirl.png',
-  'moveboy': 'images/moveboy.png',
-  'left': 'images/left.png',
-  'right': 'images/right.png',
-  'mstep1': 'images/mstep1.png',
-  'mstep2': 'images/mstep2.png',
-  'mstep3': 'images/mstep3.png',
-  'out': 'images/out.png'
-}*/
+
 import images from './R.js'
 import audio from './M.js'
 

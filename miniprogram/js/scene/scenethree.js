@@ -6,6 +6,8 @@ let bgw = canvas.width
 let bgh = bgw *750/1333
 let bgy = -(bgh-canvas.height)/2
 
+let pr = window.devicePixelRatio
+
 export default class SceneThree {
   constructor(databus) {
 
@@ -29,17 +31,36 @@ export default class SceneThree {
     this.cabinet = new MyAnimation(databus.imgList['cabinet'], 3, 2038, 533)
     this.animations.push(this.cabinet)
 
+    this.rabbit = new MyAnimation(databus.imgList['rabbit'], 5, 1370, 415)
+
   }
   init() {
     this.cabinet.init(canvas.width - 650 * r_w, 106 * r_h + bgy, 650 * r_w, 500 * r_w)
+    this.rabbit.init(80 * r_w, 260 * r_h, 273 * 1.5 * r_h, 415 * 1.5 * r_h)
+    this.rabbit.playAnimation(0, true, 30)
 
     this.finished = false
+    this.audio2played = false
     this.pickupHandler = this.pickup.bind(this)
     this.nextHandler = this.nextScene.bind(this)
-    this.bindEvent()
 
+    // this.resize = false
+
+    this.playAudio = true
+    this.databus.audioList['3_1'].play()
+    this.databus.audioList['3_1'].onEnded((res) => { 
+      this.bindEvent()
+      this.playAudio = false
+       })
   }
   render(ctx) {
+    // if(!this.resize){
+      // canvas.width = canvas.width * window.devicePixelRatio
+      // canvas.height = canvas.height * window.devicePixelRatio
+      // ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+
+      // this.resize = true
+    // }
     ctx.drawImage(this.databus.imgList['bg3'], 0, bgy, bgw, bgh)
     this.animations.forEach((ani) => {
         ani.render(ctx)
@@ -59,14 +80,28 @@ export default class SceneThree {
       ctx.drawImage(this.databus.imgList['btn01'],
         11, 523, 259, 114,
         this.nextArea.startX, this.nextArea.startY, this.nextArea.width, this.nextArea.height)
+
+      if (!this.audio2played){
+        this.audio2played = true
+        this.playAudio = true
+        this.databus.audioList['3_2'].play()
+        this.databus.audioList['3_2'].onEnded((res) => { 
+          this.databus._event.on('touchstart', this.nextHandler)
+          this.playAudio = false
+         })
+      }
     }
-      
+    if (this.playAudio) {
+      this.rabbit.render(ctx)
+    }
   }
   update() {
     this.animations.forEach((ani) => {
       if (this.databus.frame % ani.interval === 0)
         ani.update()
     })
+    if (this.databus.frame % this.rabbit.interval === 0)
+      this.rabbit.update()
   }
 
   bindEvent() {
@@ -86,7 +121,6 @@ export default class SceneThree {
       && y <= area.startY + area.height) {
       this.cabinet.playAnimation(0, false, 30)
       this.databus._event.off('touchstart', this.pickupHandler)
-      this.databus._event.on('touchstart', this.nextHandler)
       this.finished = true
       }
   }

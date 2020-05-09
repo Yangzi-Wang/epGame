@@ -2,6 +2,7 @@
 
 let r_w = canvas.width / 1334
 let r_h = canvas.height / 750
+let pr = window.devicePixelRatio
 
 export default class EpClass {
   constructor(databus) {
@@ -35,10 +36,18 @@ export default class EpClass {
     }
     this.backHandler = this.goback.bind(this)
     this.nextPageHandler = this.nextPage.bind(this)
+
+    this.audio = []
+    this.audio.push(databus.audioList['class1'])
+    this.audio.push(databus.audioList['class2'])
+    this.audio.push(databus.audioList['class3'])
+    this.audio.push(databus.audioList['class4'])
   }
   init() {
-    
-    this.bindEvent()
+    this.audio[0].play()
+    this.audio[0].onEnded((res) => {
+      this.bindEvent()
+    })
 
     this.pageNo = 1
 
@@ -84,6 +93,9 @@ export default class EpClass {
       && y >= area.startY
       && y <= area.startY + area.height) {
         this.pageNo++
+      this.audio[this.pageNo - 2].stop()
+      this.audio[this.pageNo-1].play()
+      
         if(this.pageNo===4){
           this.databus._event.off('touchstart', this.nextPageHandler)
         }
@@ -103,6 +115,10 @@ export default class EpClass {
       && y <= area.startY + area.height) {
       this.databus.changeScene('startPage')
       this.databus._event.off('touchstart', this.backHandler)
+
+      for(let item of this.audio){
+        item.stop()
+      }
     }
   }
 }

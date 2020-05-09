@@ -2,6 +2,10 @@
 const base_url = 'images/'
 const images = [
   {
+    'name': 'index',
+    'fileID': base_url + 'index.jpg'
+  },
+  {
     'name': 'boy',
     'fileID': base_url + 'role-boy.png'
   },
