@@ -1,4 +1,5 @@
-const base_url = 'audio/'
+// const base_url = 'audio/'
+const base_url = 'cloud://epgame-96p1p.6570-epgame-96p1p-1302001596/audio/'
 const audio = [
   {
     'name' : 'bgmusic',

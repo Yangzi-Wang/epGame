@@ -127,7 +127,7 @@ export default class SceneFour {
       //箭头
        ctx.drawImage(this.databus.imgList['btn01'],
         509, 532, 164, 112,
-        440 * r_w, 240*r_h, 164 * 0.4 * r_h, 112 * 0.4 * r_h)
+        440 * r_w, 240*r_w, 164 * 0.4 * r_h, 112 * 0.4 * r_h)
     }
     if(this.finished){
       ctx.fillStyle = '#ffffff'

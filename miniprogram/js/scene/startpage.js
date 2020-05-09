@@ -3,6 +3,9 @@ let r_w = canvas.width / 1334
 let r_h = canvas.height / 750
 let pr = window.devicePixelRatio
 
+let index_img = new Image()
+index_img.src = 'images/index.jpg'
+
 export default class StartPage {
   constructor(databus){
     
@@ -36,13 +39,17 @@ canvas.width = canvas.width * window.devicePixelRatio
     }
 
     if(this.databus.ready){
-      ctx.drawImage(this.databus.imgList['index'],0,0,canvas.width/pr,canvas.height/pr)
+      ctx.drawImage(index_img,0,0,canvas.width/pr,canvas.height/pr)
       ctx.drawImage(this.databus.imgList['btn01'],
       11,299,196,194,
         this.btnArea.startX, this.btnArea.startY, this.btnArea.width, this.btnArea.height)
     }else{
-
-      drawCricle(ctx, this.databus.process);
+      ctx.drawImage(index_img, 0, 0, canvas.width, canvas.height)
+      ctx.fillStyle = '#ffffff'
+      ctx.globalAlpha = 0.3
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.globalAlpha = 1
+      drawProgress(ctx, this.databus.process);
     }
     
 
@@ -88,9 +95,15 @@ canvas.width = canvas.width * window.devicePixelRatio
       }
   }
 }
+// let offcanvas = wx.createCanvas()
+// offcanvas.width = canvas.width*window.devicePixelRatio
+// offcanvas.height = canvas.height*window.devicePixelRatio
+// const offctx = offcanvas.getContext('2d')
+// offctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
 let center = [canvas.width/2,canvas.height/2]
-function drawCricle(ctx, percent) {
+function drawCricle(onctx, percent) {
+  let ctx = offctx
   // 画灰色的圆
   ctx.beginPath();
   ctx.arc(center[0], center[1], 60, 0, Math.PI * 2);
@@ -109,7 +122,7 @@ function drawCricle(ctx, percent) {
   ctx.beginPath();
   ctx.arc(center[0], center[1], 57, 0, Math.PI * 2);
   ctx.closePath();
-  ctx.fillStyle = '#000';
+  ctx.fillStyle = '#fff';
   ctx.fill();
   // 填充文字				
   ctx.font = "normal 13pt Microsoft YaHei";
@@ -118,4 +131,22 @@ function drawCricle(ctx, percent) {
   ctx.textBaseline = 'middle';
   ctx.moveTo(center[0], center[1]);
   ctx.fillText(percent + '%', center[0], center[1]);
+
+  onctx.drawImage(offcanvas,
+    0, 0, canvas.width, canvas.height)
+}
+function drawProgress(ctx,percent){
+  let l = 400
+  ctx.fillStyle = '#CC99FF';
+  ctx.fillRect(canvas.width/2-l/2,canvas.height/2,l,5)
+
+  ctx.fillStyle = '#FF0066'; 
+  ctx.fillRect(canvas.width / 2 - l / 2, canvas.height/2, l*percent/100, 5)
+  // 填充文字				
+  ctx.font = "normal 13pt Microsoft YaHei";
+  ctx.fillStyle = '#FF0066';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  // ctx.moveTo(canvas.width / 2, canvas.height / 2 + 20);
+  ctx.fillText(percent + '%', canvas.width / 2, canvas.height / 2 + 24);
 }

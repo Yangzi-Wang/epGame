@@ -34,7 +34,7 @@ export default class DataBus {
     this.sceneObj['startPage'] = new StartPage(instance)
     // this.sceneObj.startPage.init()
     this.ready = false  //资源是否加载完毕
-    this.process = 0
+    this.process = 20
   }
 
   reset() {
@@ -54,6 +54,7 @@ export default class DataBus {
   loadAllResource(callback){
     let that = this
     let done = 0
+    let R_length = images.length+audio.length
     for(let obj of images){
       wx.cloud.downloadFile({
         fileID: obj.fileID,
@@ -62,8 +63,25 @@ export default class DataBus {
           // 返回临时文件路径
           that.imgList[obj.name] = new Image()
           that.imgList[obj.name].src = res.tempFilePath
-          that.process = Math.round(done / images.length * 100)
-          if (done === images.length) {
+          that.process = Math.round(done / R_length * 100)
+          if (done === R_length) {
+            callback()
+          }
+        },
+        fail: console.error
+      })
+    }
+
+    for (let obj of audio) {
+      wx.cloud.downloadFile({
+        fileID: obj.fileID,
+        success: res => {
+          done++
+          // 返回临时文件路径
+          that.audioList[obj.name] = wx.createInnerAudioContext()
+          that.audioList[obj.name].src = res.tempFilePath
+          that.process = Math.round(done / R_length * 100)
+          if (done === R_length) {
             callback()
           }
         },
@@ -84,7 +102,7 @@ export default class DataBus {
       that.audioList[obj.name] = wx.createInnerAudioContext()
       that.audioList[obj.name].src = obj.fileID
     }
-    callback()
+    // callback()
   }
   createScenes(){
     
