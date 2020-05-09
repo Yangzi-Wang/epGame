@@ -35,7 +35,7 @@ export default class SceneThree {
 
   }
   init() {
-    this.cabinet.init(canvas.width - 650 * r_w, 106 * r_h + bgy, 650 * r_w, 500 * r_w)
+    this.cabinet.init(canvas.width/pr - 650 * r_w, 106 * r_h + bgy, 650 * r_w, 500 * r_w)
     this.rabbit.init(80 * r_w, 260 * r_h, 273 * 1.5 * r_h, 415 * 1.5 * r_h)
     this.rabbit.playAnimation(0, true, 30)
 

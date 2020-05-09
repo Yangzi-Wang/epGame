@@ -103,7 +103,7 @@ export default class SelectRole {
       this.databus._event.off('touchstart', this.selectHandler)
       this.databus._event.off('touchstart', this.confirmHandler)
       this.databus.role = this.role
-      this.databus.changeScene('sceneFive')
+      this.databus.changeScene('sceneOne')
 
       canvas.width = canvas.width / window.devicePixelRatio
       canvas.height = canvas.height / window.devicePixelRatio

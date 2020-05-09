@@ -2,7 +2,7 @@ const base_url = 'audio/'
 const audio = [
   {
     'name' : 'bgmusic',
-    'fileID' : base_url + 'bgmusic5.mp3'
+    'fileID' : base_url + 'bgmusic.mp3'
   },
   {
     'name' : 'window',
