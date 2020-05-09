@@ -4,11 +4,6 @@ import Tree from '../base/tree.js'
 let r_w = canvas.width / 1366
 let r_h = canvas.height / 768
 
-let offcanvas = wx.createCanvas()
-offcanvas.width = 1333
-offcanvas.height = 750
-const offctx = offcanvas.getContext('2d')
-
 export default class SceneTwo {
   constructor(databus){
     this.databus = databus
@@ -71,10 +66,10 @@ export default class SceneTwo {
     }
 
     this.gentleArea = {
-      startX: canvas.width / 2 - 50 * r_w,
-      startY: 300 * r_h,
-      width: 342 * 0.3 * r_w,
-      height: 539 * 0.3 * r_h
+      startX: canvas.width / 2 - 60 * r_w,
+      startY: 320 * r_h,
+      width: 342 * 0.4 * r_w,
+      height: 539 * 0.4 * r_h
     }
 
     this.leftArea = {
@@ -115,7 +110,6 @@ export default class SceneTwo {
     this.tip = true
     this.count = 401
     this.cycle = 0
-    console.log(this.trees)
 
     if(this.role==1){
       this.name = 'girl'
@@ -154,8 +148,6 @@ export default class SceneTwo {
 
     ctx.drawImage(this.databus.imgList['ground'], 0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio)
 
-    //ctx.drawImage(this.databus.imgList['line'], this.lineArea.startX, this.lineArea.startY, this.lineArea.width, this.lineArea.height)
-
     for (let i = 0; i < this.trees.length;i++){
       this.trees[i].render(ctx)
     }
@@ -192,6 +184,7 @@ export default class SceneTwo {
         ani.update()
     })
     if(this.run){
+      //垃圾桶移动
       if (this.count / 2000 <= 0.6) {
       this.trashArea.startX += 0.4 * r_w
       this.trashArea.startY += 0.3 * r_h
@@ -201,7 +194,7 @@ export default class SceneTwo {
         this.trashArea.startX += 0.4 * r_w
         this.trashArea.startY += 0.3 * r_h
       }
-
+      //女士移动
       if(this.count/2000<=0.7){
         this.lady.locx -= 0.3 * r_w
         this.lady.target_w = 342 * this.count / 2000 * r_w
@@ -210,31 +203,31 @@ export default class SceneTwo {
         this.lady.locx -= 0.3 * r_w
         this.lady.locy += 0.4 * r_h
       }
-      
-      if((this.count+200) / 2000<=0.7 ){
+      //男士移动
+      if((this.count+400) / 2000<=0.7 ){
         this.gentle.locx -= 0.08 * r_w
-        this.gentle.target_w = 342 * (this.count + 200) / 2000 * r_w
-        this.gentle.target_h = 539 * (this.count + 200) / 2000 * r_h
+        this.gentle.target_w = 342 * (this.count + 400) / 2000 * r_w
+        this.gentle.target_h = 539 * (this.count + 400) / 2000 * r_h
       }else{
         this.gentle.locy += 0.4 * r_h
       }
-
-      if(this.gentle.locy + this.gentle.target_h/2 >=this.move.locy && !this.left){
+      //躲避男士
+      if(this.gentle.locy + this.gentle.target_h / 3 >=this.move.locy && !this.left){
         this.leftbtn = true
         this.run  =false
-        this.databus._event.on('touchstart', this.leftHandler)
-      }
-
-      if (this.lady.locy + this.lady.target_h / 2 >= this.move.locy && !this.right){
-        this.rightbtn = true
-        this.run = false
         this.near = true
         this.vis = true
+        this.databus._event.on('touchstart', this.leftHandler)
+      }
+      //躲避女士
+      if (this.lady.locy + this.lady.target_h / 3 >= this.move.locy && !this.right){
+        this.rightbtn = true
+        this.run = false
         this.databus._event.on('touchstart', this.rightHandler)
       }
-
+      //快递牌移动
       if(this.near && this.vis){
-        this.cycle++
+        this.cycle ++
         this.brandArea.startX -= 0.02 * r_w
         this.brandArea.startY -= 0.05 * r_h
         this.brandArea.width = 144  *( 0.2  + this.cycle / 2000) * r_w
@@ -247,7 +240,7 @@ export default class SceneTwo {
           this.databus._event.on('touchstart', this.nextHandler)
         }
       }
-      //this.cycle++
+      //树的移动
       for (let i = 0; i < this.trees.length; i++){
         this.trees[i].duration++
         this.trees[i].locx += 0.4 * r_w
@@ -265,7 +258,6 @@ export default class SceneTwo {
       if (this.trees[0].duration / 2000 >= 0.3){
         let temp = new Tree(this.databus.imgList['tree1'], this.treeArea.startX, this.treeArea.startY, this.treeArea.width, this.treeArea.height,400)
         this.trees.unshift(temp)
-        console.log(this.trees)
       }
 
     
@@ -288,7 +280,6 @@ export default class SceneTwo {
       && x <= area.startX + area.width
       && y >= area.startY
       && y <= area.startY + area.height) {
-        console.log("hello")
       this.move.locx -= 200
       this.left  =true
       this.run  = true
@@ -307,7 +298,6 @@ export default class SceneTwo {
       && x <= area.startX + area.width
       && y >= area.startY
       && y <= area.startY + area.height) {
-      console.log("hello")
       this.move.locx += 200
       this.right = true
       this.run = true
