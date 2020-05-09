@@ -30,7 +30,7 @@ export default class SceneTwo {
       width: 768* 0.2 * r_w,
       height: 845 * 0.2 * r_h
     }
-    this.trashArea = {
+    /*this.trashArea = {
       startX: canvas.width / 2 + 55 * r_w,
       startY: 300 * r_h,
       width: 344 * 0.2 * r_w,
@@ -42,7 +42,7 @@ export default class SceneTwo {
       startY: 280 * r_h,
       width: 144 * 0.2  * r_w,
       height: 131 * 0.2 * r_h
-    }
+    }*/
 
     this.roleArea = {
       startX: canvas.width / 2 - 100 * r_w,
@@ -99,6 +99,21 @@ export default class SceneTwo {
 
 
   init(){
+
+    this.trashArea = {
+      startX: canvas.width / window.devicePixelRatio / 2 + 55 * r_w,
+      startY: 300 * r_h,
+      width: 344 * 0.2 * r_w,
+      height: 408 * 0.2 * r_h
+    }
+
+    this.brandArea = {
+      startX: canvas.width / window.devicePixelRatio / 2 - 5 * r_w,
+      startY: 280 * r_h,
+      width: 144 * 0.2 * r_w,
+      height: 131 * 0.2 * r_h
+    }
+
     this.role = this.databus.role
     this.run = false
     this.leftbtn  = false
@@ -108,6 +123,7 @@ export default class SceneTwo {
     this.near = false
     this.vis = false
     this.tip = true
+    this.mo = true
     this.count = 401
     this.cycle = 0
 
@@ -138,6 +154,7 @@ export default class SceneTwo {
     this.bindEvent()
     this.databus.audioList['avoid'].play()
     this.databus.audioList['avoid'].onEnded((res)=> {
+      this.mo = false
       this.tip = false
       this.run = true
     })
@@ -151,9 +168,6 @@ export default class SceneTwo {
     for (let i = 0; i < this.trees.length;i++){
       this.trees[i].render(ctx)
     }
-    if(this.vis){
-      ctx.drawImage(this.databus.imgList['brand'], this.brandArea.startX, this.brandArea.startY, this.brandArea.width, this.brandArea.height)
-    }
 
     if (this.trashArea.startY + this.trashArea.height <= canvas.height / window.devicePixelRatio){
       ctx.drawImage(this.databus.imgList['trash'], this.trashArea.startX, this.trashArea.startY, this.trashArea.width, this.trashArea.height)
@@ -166,9 +180,21 @@ export default class SceneTwo {
     }
     this.move.render(ctx)
 
+    if (this.mo) {
+      ctx.fillStyle = "#ffffff"
+      ctx.globalAlpha = 0.3
+      ctx.fillRect(0,0,canvas.width,canvas.height)
+      ctx.globalAlpha = 1
+    }
+
+    if (this.vis) {
+      ctx.drawImage(this.databus.imgList['brand'], this.brandArea.startX, this.brandArea.startY, this.brandArea.width, this.brandArea.height)
+    }
+
     if (this.tip) {
       this.rabbit.render(ctx)
     }
+
 
     if(this.leftbtn){
       ctx.drawImage(this.databus.imgList['btnfs'],11,151,198,193, this.leftArea.startX, this.leftArea.startY, this.leftArea.width, this.leftArea.height)
@@ -236,8 +262,12 @@ export default class SceneTwo {
           this.near = false
           this.run = false
           this.tip = true
+          this.mo = true
           this.databus.audioList['arrive'].play()
-          this.databus._event.on('touchstart', this.nextHandler)
+          this.databus.audioList['arrive'].onEnded((res)=>{
+            this.tip = false
+            this.databus._event.on('touchstart', this.nextHandler)
+          })
         }
       }
       //树的移动
