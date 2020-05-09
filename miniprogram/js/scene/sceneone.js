@@ -88,12 +88,13 @@ export default class SceneOne {
 
   init() {
     this.role = this.databus.role
-    console.log(this.role)
+
     if(this.role==1){
       this.name = 'girl'
     }else{
       this.name = 'boy'
     }
+
     this.sleep = new MyAnimation(this.databus.imgList[`sleep${this.name}`], 3, 1766, 249)
     this.animations.push(this.sleep)
 
@@ -105,9 +106,6 @@ export default class SceneOne {
     this.clock.init(this.clockArea.startX,this.clockArea.startY,this.clockArea.width,this.clockArea.height)
     this.clock.playAnimation(0,true,10)
 
-    //this.role = this.databus.role  //传递过来的角色值
-    //this.sleep.init(10,135,588*0.5,249*0.5)
-    //this.sleep.playAnimation(0,true,40)
     this.sleep.init(this.sleepgArea.startX,this.sleepgArea.startY,this.sleepgArea.width,this.sleepgArea.height)
     this.sleep.playAnimation(0, true, 40)
 
@@ -117,9 +115,9 @@ export default class SceneOne {
     this.rabbit.init(this.rabbitArea.startX, this.rabbitArea.startY, this.rabbitArea.width, this.rabbitArea.height)
     this.rabbit.playAnimation(0, true, 30)
 
-    this.wake = false
-    this.big = false
-    this.cheaked = true
+    this.wake = false 
+    this.big = false 
+    this.cheaked = true 
     this.cover = true
     this.close = false
     this.bol = true
@@ -147,9 +145,7 @@ export default class SceneOne {
 
     this.window.render(ctx)
     this.clock.render(ctx)
-    if(this.tip){
-      this.rabbit.render(ctx)
-    }
+    
     if (this.wake) {
       this.man.render(ctx)
     } else {
@@ -172,11 +168,18 @@ export default class SceneOne {
     }
 
     if(this.close) {
+      ctx.fillStyle = '#ffffff'
+      ctx.globalAlpha = 0.3
+      ctx.fillRect(0,0,canvas.width,canvas.height)
+      ctx.globalAlpha = 1
       ctx.drawImage(this.databus.imgList['btnfs'],690,151,259,114, this.nextSceneBtnArea.startX, this.nextSceneBtnArea.startY, this.nextSceneBtnArea.width, this.nextSceneBtnArea.height)
     }
 
     ctx.drawImage(this.databus.imgList['mask'],this.maskArea.imgX,0,220,126, this.maskArea.startX, this.maskArea.startY, this.maskArea.width, this.maskArea.height)
 
+    if (this.tip) {
+      this.rabbit.render(ctx)
+    }
   }
 
   update() {
@@ -249,7 +252,6 @@ export default class SceneOne {
       && x <= area.startX + area.width
       && y >= area.startY
       && y <= area.startY + area.height){
-        console.log("hello")
       this.databus._event.on('touchend', this.downHandler)
       }
   }

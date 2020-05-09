@@ -134,10 +134,6 @@ const images = [
     'fileID': base_url + 'sky.png'
   },
   {
-    'name': 'line',
-    'fileID': base_url + 'line.png'
-  },
-  {
     'name': 'tree1',
     'fileID': base_url + 'tree1.png'
   },
