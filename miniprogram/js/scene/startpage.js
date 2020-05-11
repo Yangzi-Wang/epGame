@@ -1,3 +1,6 @@
+let info = wx.getSystemInfoSync()
+canvas.width = info.screenWidth
+canvas.height = info.screenHeight
 
 let r_w = canvas.width / 1334
 let r_h = canvas.height / 750
@@ -32,7 +35,7 @@ export default class StartPage {
   }
   render(ctx) {
     if (this.databus.ready&&!this.canvasScale){
-canvas.width = canvas.width * window.devicePixelRatio
+      canvas.width = canvas.width * window.devicePixelRatio
       canvas.height = canvas.height * window.devicePixelRatio
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
       this.canvasScale = true
@@ -71,9 +74,11 @@ canvas.width = canvas.width * window.devicePixelRatio
 
       this.databus.audioList['start'].play()
       this.databus.audioList['start'].onEnded((res) => {
-        this.databus._event.on('touchstart', this.eventHandler1)
+        // this.databus._event.on('touchstart', this.eventHandler1)
       })
       this.hasEventBind = true
+
+      this.databus._event.on('touchstart', this.eventHandler1)
     }
     
   }

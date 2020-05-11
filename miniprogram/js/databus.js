@@ -102,7 +102,7 @@ export default class DataBus {
       that.audioList[obj.name] = wx.createInnerAudioContext()
       that.audioList[obj.name].src = obj.fileID
     }
-    // callback()
+    callback()
   }
   createScenes(){
     

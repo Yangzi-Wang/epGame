@@ -50,6 +50,7 @@ export default class SelectRole {
     
     this.role = -1
     
+    this.databus.audioList['start'].stop()
     this.databus.audioList['selectrole'].play()
     this.databus.audioList['selectrole'].onEnded((res) => {
       this.bindEvent()
@@ -105,9 +106,9 @@ export default class SelectRole {
       this.databus.role = this.role
       this.databus.changeScene('sceneOne')
 
-      canvas.width = canvas.width / window.devicePixelRatio
-      canvas.height = canvas.height / window.devicePixelRatio
-      canvas.getContext('2d').scale(1, 1)
+      // canvas.width = canvas.width / window.devicePixelRatio
+      // canvas.height = canvas.height / window.devicePixelRatio
+      // canvas.getContext('2d').scale(1, 1)
     }
   }
   selectHandler(e){
