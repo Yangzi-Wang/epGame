@@ -131,7 +131,6 @@ export default class SceneOne {
     this.cheaked = true 
     this.cover = true
     this.close = false
-    this.bol = true
     this.tip = true
     this.maskcount = 1
     this.downHandler = this.putdown.bind(this)
@@ -146,12 +145,6 @@ export default class SceneOne {
 
 
   render(ctx) {
-    if(this.bol){
-      this.bol = false
-      canvas.width = canvas.width * window.devicePixelRatio
-      canvas.height = canvas.height * window.devicePixelRatio
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
-    }
     ctx.drawImage(this.databus.imgList['bedroomBg'], 0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio)
 
     this.window.render(ctx)
@@ -181,10 +174,7 @@ export default class SceneOne {
     ctx.drawImage(this.databus.imgList['mask'], this.maskArea.imgX, 0, 220, 126, this.maskArea.startX, this.maskArea.startY, this.maskArea.width, this.maskArea.height)
 
     if(this.close) {
-      ctx.fillStyle = '#ffffff'
-      ctx.globalAlpha = 0.3
-      ctx.fillRect(0,0,canvas.width,canvas.height)
-      ctx.globalAlpha = 1
+      
       ctx.drawImage(this.databus.imgList['btnfs'],690,151,259,114, this.nextSceneBtnArea.startX, this.nextSceneBtnArea.startY, this.nextSceneBtnArea.width, this.nextSceneBtnArea.height)
     }
 
